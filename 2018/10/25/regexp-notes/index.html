@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="1.RegExp对象Javascript 通过内置对象RegExp支持正则表达式">
+<meta name="description" content="RegExp对象Javascript 通过内置对象RegExp支持正则表达式 有两种方法实例化RegExp对象:  字面量   1var reg = /\bis\b/g;  构造函数   1var reg = new RegExp(&amp;apos;\\bis\\b&amp;apos;, &amp;apos;g&amp;apos;)   修饰符:  g: global全文搜索，不添加，搜索到第一个匹配停止 i: ignore">
 <meta name="keywords" content="RegExp,Javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JS正则表达式学习笔记">
 <meta property="og:url" content="http://yoursite.com/2018/10/25/regexp-notes/index.html">
 <meta property="og:site_name" content="HarryYin">
-<meta property="og:description" content="1.RegExp对象Javascript 通过内置对象RegExp支持正则表达式">
+<meta property="og:description" content="RegExp对象Javascript 通过内置对象RegExp支持正则表达式 有两种方法实例化RegExp对象:  字面量   1var reg = /\bis\b/g;  构造函数   1var reg = new RegExp(&amp;apos;\\bis\\b&amp;apos;, &amp;apos;g&amp;apos;)   修饰符:  g: global全文搜索，不添加，搜索到第一个匹配停止 i: ignore">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-25T02:53:43.444Z">
+<meta property="og:updated_time" content="2018-10-29T07:53:15.445Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JS正则表达式学习笔记">
-<meta name="twitter:description" content="1.RegExp对象Javascript 通过内置对象RegExp支持正则表达式">
+<meta name="twitter:description" content="RegExp对象Javascript 通过内置对象RegExp支持正则表达式 有两种方法实例化RegExp对象:  字面量   1var reg = /\bis\b/g;  构造函数   1var reg = new RegExp(&amp;apos;\\bis\\b&amp;apos;, &amp;apos;g&amp;apos;)   修饰符:  g: global全文搜索，不添加，搜索到第一个匹配停止 i: ignore">
 
 
 
@@ -342,128 +342,243 @@
       
 
       
-        <h1 id="1-RegExp对象"><a href="#1-RegExp对象" class="headerlink" title="1.RegExp对象"></a>1.RegExp对象</h1><p>Javascript 通过内置对象RegExp支持正则表达式</p>
-<a id="more"></a>
-<h3 id="有两种方法实例化RegExp对象"><a href="#有两种方法实例化RegExp对象" class="headerlink" title="有两种方法实例化RegExp对象:"></a>有两种方法实例化RegExp对象:</h3><blockquote>
-<ul>
-<li><p>字面量<br>  var reg = /\bis\b/g;  </p>
+        <h3 id="RegExp对象"><a href="#RegExp对象" class="headerlink" title="RegExp对象"></a>RegExp对象</h3><p><em>Javascript 通过内置对象RegExp支持正则表达式</em></p>
+<p>有两种方法实例化RegExp对象:</p>
+<ol>
+<li><p>字面量  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var reg = /\bis\b/g;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>构造函数<br>  var reg = new RegExp(‘\bis\b’, ‘g’)</p>
+<li><p>构造函数  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var reg = new RegExp(&apos;\\bis\\b&apos;, &apos;g&apos;)</span><br></pre></td></tr></table></figure>
 </li>
-</ul>
-</blockquote>
-<h3 id="修饰符"><a href="#修饰符" class="headerlink" title="修饰符:"></a>修饰符:</h3><blockquote>
+</ol>
+<p>修饰符:</p>
 <ul>
 <li>g: global全文搜索，不添加，搜索到第一个匹配停止</li>
 <li>i: ignore case 忽略大小写，默认大小写敏感</li>
 <li>m: multiple lines 多行搜索</li>
 </ul>
-</blockquote>
-<h1 id="2-元字符"><a href="#2-元字符" class="headerlink" title="2.元字符"></a>2.元字符</h1><blockquote>
-<ul>
+<a id="more"></a>
+<hr>
+<h3 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h3><ul>
 <li>原义文本字符</li>
-<li>元字符: 在正则表达式中有特殊含义的非字母字符<br>eg: * + ? $ ^ . | \  () {} []</li>
+<li>元字符: 在正则表达式中有特殊含义的非字母字符  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg: * + ? $ ^ . | \  () &#123;&#125; []</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-</blockquote>
-<h1 id="3-字符类"><a href="#3-字符类" class="headerlink" title="3.字符类"></a>3.字符类</h1><blockquote>
-<ul>
+<hr>
+<h3 id="字符类"><a href="#字符类" class="headerlink" title="字符类"></a>字符类</h3><ul>
 <li>一般情况下，正则表达式一个字符对应字符串一个字符；  </li>
-<li>我们可以使用元字符 [] 来构建一个简单的类（ 所谓的类是指符合某些特性的对象，一个泛指，而不是特指某个字符。）；<br>eg: 表达式[abc]把字符a或b或c归为一类，表达式可以匹配这类字符</li>
+<li>我们可以使用元字符 [] 来构建一个简单的类（ 所谓的类是指符合某些特性的对象，一个泛指，而不是特指某个字符。）；  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg: 表达式[abc]把字符a或b或c归为一类，表达式可以匹配这类字符</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-</blockquote>
-<h3 id="字符类取反："><a href="#字符类取反：" class="headerlink" title="字符类取反："></a>字符类取反：</h3><blockquote>
+<p>字符类取反：</p>
 <ul>
 <li>使用元字符 ^ 创建 反向类/负向类；  </li>
-<li>反向类的意思是不属于某类的内容；<br>eg: 表达式 [^abc]表示不是a、b、c 中任意一个的字符</li>
+<li>反向类的意思是不属于某类的内容；  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg: 表达式 [^abc]表示不是a、b、c 中任意一个的字符</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-</blockquote>
-<h1 id="4-范围类"><a href="#4-范围类" class="headerlink" title="4.范围类"></a>4.范围类</h1><blockquote>
+<hr>
+<h3 id="范围类"><a href="#范围类" class="headerlink" title="范围类"></a>范围类</h3><blockquote>
 <ul>
 <li>正则表达式提供了范围类，我们可以使用[a-z]来连接两个字符 </li>
 <li>在 [] 组成的类内部可以连写 [a-zA-Z] 表示 <em><strong>从a到z以及A到Z的任意字符</strong></em></li>
 <li>在 [] 内 - 在两个字符之间表示范围，若不是则单纯表示-字符</li>
 </ul>
 </blockquote>
-<h1 id="5-预定义类"><a href="#5-预定义类" class="headerlink" title="5.预定义类"></a>5.预定义类</h1><p>正则表达式提供了 <strong><em>预定义类</em></strong> 来匹配常见的字符类。 </p>
-<blockquote>
-<p>字符　　　　　等价类　　　　　　　含义<br>   .　　　　　　　[^\r\n]　　　　　　除了回车符和换行符之外的所有字符<br>   \d　　　　　　　[0-9] 　　　　　　数字字符<br>   \D  　　　　　　[^0-9] 非数字字符<br>   \s 　　　　　[\t\n\x0B\f\r] 　　　　　空白符<br>   \S 　　　　　[^\t\n\x0B\f\r] 　　　　非空白符<br>   \w 　　　　　[a-zA-Z_0-9] 　　　　单词字符（字母、数字、下划线）<br>   \W 　　　　　[^a-zA-Z_0-9] 　　　　非单词字符</p>
-</blockquote>
-<p>正则表达式还提供了几个常用的边界匹配字符  </p>
-<blockquote>
-<p>字符　　　　　　含义<br>  ^ 　　　　　　　以xxx（＾后面的字符）开始<br>  $ 　　　　　　　以xxx（＄前面的字符）结束<br>  \b 　　　　　　　单词边界<br>  \B 　　　　　　　非单词边界</p>
-</blockquote>
-<h1 id="6-量词"><a href="#6-量词" class="headerlink" title="6.量词"></a>6.量词</h1><p>注：量词作用于紧挨着它的前一个字符或分组。</p>
-<blockquote>
-<p>字符 　　　　　　含义<br>   ?　　　　　　　出现0次或1次（最多出现一次）<br>   +　　　　　　　出现1次或多次（最少出现一次）<br>   *　　　　　　　出现0次或多次（任意次）<br>   {n} 　　　　　　　出现n次<br>   {n, m} 　　　　　出现n次到m次<br>   {n,} 　　　　　　最少出现n次</p>
-</blockquote>
-<h1 id="7-贪婪与非贪婪模式"><a href="#7-贪婪与非贪婪模式" class="headerlink" title="7.贪婪与非贪婪模式"></a>7.贪婪与非贪婪模式</h1><blockquote>
+<hr>
+<h3 id="预定义类"><a href="#预定义类" class="headerlink" title="预定义类"></a>预定义类</h3><p>正则表达式提供了 <strong><em>预定义类</em></strong> 来匹配常见的字符类。 </p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>等价类</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.</td>
+<td>[^\r\n]　　　　　</td>
+<td>除了回车符和换行符之外的所有字符</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>[0-9] 　　　　　　</td>
+<td>数字字符</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>[^0-9]</td>
+<td>非数字字符</td>
+</tr>
+<tr>
+<td>\s</td>
+<td>[\t\n\x0B\f\r] 　</td>
+<td>空白符</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>[^\t\n\x0B\f\r]</td>
+<td>非空白符</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>[a-zA-Z_0-9] 　　</td>
+<td>单词字符（字母、数字、下划线)</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>[^a-zA-Z_0-9] 　　</td>
+<td>非单词字符</td>
+</tr>
+</tbody>
+</table>
+<p>正则表达式还提供了几个常用的边界匹配字符    </p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>^ 　　</td>
+<td>以xxx（＾后面的字符）开始</td>
+</tr>
+<tr>
+<td>$ 　　</td>
+<td>以xxx（＄前面的字符）结束</td>
+</tr>
+<tr>
+<td>\b 　</td>
+<td>单词边界</td>
+</tr>
+<tr>
+<td>\B 　</td>
+<td>非单词边界</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p>注：量词作用于紧挨着它的前一个字符或分组。</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>?　</td>
+<td>出现0次或1次（最多出现一次）</td>
+</tr>
+<tr>
+<td>+　</td>
+<td>出现1次或多次（最少出现一次）</td>
+</tr>
+<tr>
+<td>*　</td>
+<td>出现0次或多次（任意次）</td>
+</tr>
+<tr>
+<td>{n}</td>
+<td>出现n次</td>
+</tr>
+<tr>
+<td>{n, m}</td>
+<td>出现n次到m次</td>
+</tr>
+<tr>
+<td>{n,}</td>
+<td>最少出现n次</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="贪婪与非贪婪模式"><a href="#贪婪与非贪婪模式" class="headerlink" title="贪婪与非贪婪模式"></a>贪婪与非贪婪模式</h3><blockquote>
 <ul>
 <li>贪婪模式（默认）：正则表达式尽可能多的匹配</li>
-<li>非贪婪模式：正则表达式尽可能少的匹配，一旦匹配成功就不再尝试匹配。<strong><em>方法： 在量词后加上?即可</em></strong><br>eg: /\d{3,5}?/g</li>
+<li>非贪婪模式：正则表达式尽可能少的匹配，一旦匹配成功就不再尝试匹配。<strong><em>方法： 在量词后加上?即可</em></strong>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg: /\d&#123;3,5&#125;?/g</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </blockquote>
-<h1 id="8-分组"><a href="#8-分组" class="headerlink" title="8.分组"></a>8.分组</h1><ul>
+<hr>
+<h3 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h3><ul>
 <li><p>使用 () 可以达到分组的功能，使量词作用于分组。 </p>
-<blockquote>
-<p>eg: (Harry){3}<br>  ‘a1b2c3d4’.replace(/([a-z]\d){3}/g, ‘X’)</p>
-</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">eg: </span><br><span class="line">(Harry)&#123;3&#125;  </span><br><span class="line">&apos;a1b2c3d4&apos;.replace(/([a-z]\d)&#123;3&#125;/g, &apos;X&apos;)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>或:  <strong><em>使用 | 可以达到或的效果</em></strong></p>
-<blockquote>
-<p>eg: Harry | Yin<br>   Har(ry|yi)Yin</p>
-</blockquote>
-</li>
-<li><p>反向引用  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">eg:  Harry | Yin</span><br><span class="line">     Har(ry|yi)Yin</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p><strong><em>利用$加数字（从1开始）捕获分组</em></strong> </p>
-<blockquote>
-<p>eg: ‘2018-07-16’.replace(/(\d{4})-(\d{2})-(\d{2})/g, ‘$2/$3/$1’)  </p>
-</blockquote>
-<p><strong><em>不希望捕获分组，只需要在分组内加上 ?: 即可</em></strong></p>
-<blockquote>
-<p>eg: /(?:Harry).(ok)/</p>
-</blockquote>
-<h1 id="9-前瞻"><a href="#9-前瞻" class="headerlink" title="9.前瞻"></a>9.前瞻</h1><ul>
+<p>反向引用  </p>
+<ul>
+<li><p>利用$加数字（从1开始）捕获分组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg: &apos;2018-07-16&apos;.replace(/(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)/g, &apos;$2/$3/$1&apos;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不希望捕获分组，只需要在分组内加上 ?: 即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg: /(?:Harry).(ok)/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="前瞻"><a href="#前瞻" class="headerlink" title="前瞻"></a>前瞻</h3><ul>
 <li>正则表达式从文本头部向尾部开始解析，因此文本尾部的方向称为“前”，文本头部为“后”；  </li>
 <li><strong><em>前瞻</em></strong> 就是正则表达式匹配规则时，向前检查是否符合断言，<strong><em>后顾/后瞻</em></strong> 则方向相反；</li>
 <li>javascript不支持后顾；</li>
-<li>符合特定断言称为肯定/正向匹配，不符合特定断言称为否定/负向匹配。<blockquote>
-<p>名称 　　　　　　正则  </p>
-<ul>
-<li>正向前瞻 　　exp(?=assert)<br>eg: \w(?=\d)  先匹配到一个单词字符，在判断其后面是否为数字，满足的话只会替换\w部分不包括断言部分。</li>
-<li>负向前瞻 　　exp(?!assert)</li>
+<li>符合特定断言称为肯定/正向匹配，不符合特定断言称为否定/负向匹配。</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>正则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>正向前瞻</td>
+<td>exp(?=assert)</td>
+</tr>
+<tr>
+<td>负向前瞻</td>
+<td>exp(?!assert)</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg: \w(?=\d)  先匹配到一个单词字符，在判断其后面是否为数字，满足的话只会替换\w部分不包括断言部分。</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="对象属性"><a href="#对象属性" class="headerlink" title="对象属性"></a>对象属性</h3><ul>
+<li>global: 是否全文搜索，默认false；（只读）  </li>
+<li>ignoreCase: 是否忽略大小写，默认false；  </li>
+<li>multiline: 是否匹配多行，默认false；  </li>
+<li>lastIndex: 一个整数，表示开始下一次匹配的字符位置；  </li>
+<li>source: 正则表达式的源文本。</li>
+</ul>
+<hr>
+<h3 id="RegExp对象的方法"><a href="#RegExp对象的方法" class="headerlink" title="RegExp对象的方法"></a>RegExp对象的方法</h3><ul>
+<li><p>test(str): 用于测试字符串参数中是否存在匹配正则表达式的字符串，存在返回true，否则false。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg: (/\w/g).test(&apos;a&apos;) // 每次都新实例化</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>exec(str): 使用正则表达式对字符串参数进行搜索，并将更新全局RegExp对象的属性以反映匹配结果。如果没有匹配返回null，否则返回结果数组（有属性index:匹配字符的第一个字符的位置）</p>
+<blockquote>
 </blockquote>
 </li>
-</ul>
-<h1 id="10-对象属性"><a href="#10-对象属性" class="headerlink" title="10.对象属性"></a>10.对象属性</h1><blockquote>
-<p>global: 是否全文搜索，默认false；（只读）<br> ignoreCase: 是否忽略大小写，默认false；<br> multiline: 是否匹配多行，默认false；<br> lastIndex: 一个整数，表示开始下一次匹配的字符位置；<br> source: 正则表达式的源文本。</p>
-</blockquote>
-<h1 id="11-RegExp对象的方法"><a href="#11-RegExp对象的方法" class="headerlink" title="11.RegExp对象的方法"></a>11.RegExp对象的方法</h1><blockquote>
-<ul>
-<li>test(str): 用于测试字符串参数中是否存在匹配正则表达式的字符串，存在返回true，否则false。<br>eg: (/\w/g).test(‘a’) // 每次都新实例化</li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>exec(str): 使用正则表达式对字符串参数进行搜索，并将更新全局RegExp对象的属性以反映匹配结果。如果没有匹配返回null，否则返回结果数组（有属性index:匹配字符的第一个字符的位置）</li>
-</ul>
-<ol>
-<li>非全局调用：调用非全局RegExp对象的exec()时，返回数组: </li>
-</ol>
-<ul>
+<li>非全局调用：调用非全局RegExp对象的exec()时，返回数组: <ol>
 <li>第一个元素是与正则表达式匹配的文本；</li>
 <li>第二个元素是与RegExp对象的第一个子表达式（分组）相匹配的文本；</li>
 <li>第三个元素是与RegExp对象的第二个子表达式（分组）相匹配的文本，以此类推。  </li>
+</ol>
+</li>
 </ul>
-</blockquote>
-<h1 id="12-String对象的方法"><a href="#12-String对象的方法" class="headerlink" title="12.String对象的方法"></a>12.String对象的方法</h1><ul>
-<li><h2 id="search"><a href="#search" class="headerlink" title="search()"></a>search()</h2><blockquote>
+<hr>
+<h3 id="String对象的方法"><a href="#String对象的方法" class="headerlink" title="String对象的方法"></a>String对象的方法</h3><ul>
+<li><h4 id="search"><a href="#search" class="headerlink" title="search()"></a>search()</h4><blockquote>
 <p>用于检索字符串中指定的字符串，或检索与正则表达式匹配的子字符串，方法返回第一个匹配结果index,查找不到返回-1。（不执行全局匹配，会忽略g标志）</p>
 </blockquote>
 </li>
-<li><h2 id="match"><a href="#match" class="headerlink" title="match()"></a>match()</h2><blockquote>
+<li><h4 id="match"><a href="#match" class="headerlink" title="match()"></a>match()</h4><blockquote>
 <p>检索字符串，以找到一个或多个与正则表达式匹配的文本（g标志会执行全局）</p>
 <ol>
 <li><p>非全局调用<br>没有找到任何匹配返回null，否则返回一个数组，其中存放与匹配文本相关信息: 第一个元素是匹配文本，其余元素存放与正则表达式子表达式（分组）匹配的文本；  </p>
@@ -473,18 +588,12 @@
 </ol>
 </blockquote>
 </li>
-<li><h2 id="split-reg"><a href="#split-reg" class="headerlink" title="split(reg)"></a>split(reg)</h2><blockquote>
-<p>在一些复杂的分割情况下，我们可以使用正则表达式来解决。<br>eg: ‘a1b2c3d4’.split(/\d/);  结果：[‘a’, ‘b’, ‘c’, ‘d’]</p>
+<li><h4 id="split-reg"><a href="#split-reg" class="headerlink" title="split(reg)"></a>split(reg)</h4><blockquote>
+<p>在一些复杂的分割情况下，我们可以使用正则表达式来解决。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg: &apos;a1b2c3d4&apos;.split(/\d/);  结果：[&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;]</span><br></pre></td></tr></table></figure>
 </blockquote>
 </li>
-<li><h2 id="replace"><a href="#replace" class="headerlink" title="replace()"></a>replace()</h2><blockquote>
-<p> 用法：  </p>
-<pre><code>1. replace(str1, str2)  
-2. replace(reg, str)  
-3. replace(reg, function)：在每次匹配替换时调用，有四个参数：  
-</code></pre><p>a. 匹配字符串；<br>b. 正则表达式分组内容，没有则没有该参数；<br>c. 匹配项在字符串中的index；<br>d. 原字符串；<br>eg: ‘a1b2c3d4e5’.replace(/(\d)(\w)(\d)/g, function (match, group1, group2, group3, index, 　origin) {<br>return group1 + group3 })</p>
-</blockquote>
-</li>
+<li><h4 id="replace"><a href="#replace" class="headerlink" title="replace()"></a>replace()</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">用法：  </span><br><span class="line">1. replace(str1, str2)  </span><br><span class="line">2. replace(reg, str)  </span><br><span class="line">3. replace(reg, function)：在每次匹配替换时调用，有四个参数：  </span><br><span class="line">   a. 匹配字符串；  </span><br><span class="line">   b. 正则表达式分组内容，没有则没有该参数；  </span><br><span class="line">   c. 匹配项在字符串中的index；  </span><br><span class="line">   d. 原字符串； </span><br><span class="line"></span><br><span class="line">eg: &apos;a1b2c3d4e5&apos;.replace(/(\d)(\w)(\d)/g, function (match, group1, group2, group3, index, 　origin) &#123;</span><br><span class="line">return group1 + group3 &#125;)</span><br></pre></td></tr></table></figure></li>
 </ul>
 
       
@@ -518,8 +627,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/24/新博客/" rel="next" title="新博客">
-                <i class="fa fa-chevron-left"></i> 新博客
+              <a href="/2018/10/24/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
               </a>
             
           </div>
@@ -605,7 +714,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -616,7 +725,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -627,7 +736,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -670,7 +779,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-RegExp对象"><span class="nav-number">1.</span> <span class="nav-text">1.RegExp对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有两种方法实例化RegExp对象"><span class="nav-number">1.0.1.</span> <span class="nav-text">有两种方法实例化RegExp对象:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修饰符"><span class="nav-number">1.0.2.</span> <span class="nav-text">修饰符:</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#2-元字符"><span class="nav-number">2.</span> <span class="nav-text">2.元字符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-字符类"><span class="nav-number">3.</span> <span class="nav-text">3.字符类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符类取反："><span class="nav-number">3.0.1.</span> <span class="nav-text">字符类取反：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-范围类"><span class="nav-number">4.</span> <span class="nav-text">4.范围类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-预定义类"><span class="nav-number">5.</span> <span class="nav-text">5.预定义类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-量词"><span class="nav-number">6.</span> <span class="nav-text">6.量词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-贪婪与非贪婪模式"><span class="nav-number">7.</span> <span class="nav-text">7.贪婪与非贪婪模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-分组"><span class="nav-number">8.</span> <span class="nav-text">8.分组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-前瞻"><span class="nav-number">9.</span> <span class="nav-text">9.前瞻</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-对象属性"><span class="nav-number">10.</span> <span class="nav-text">10.对象属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-RegExp对象的方法"><span class="nav-number">11.</span> <span class="nav-text">11.RegExp对象的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-String对象的方法"><span class="nav-number">12.</span> <span class="nav-text">12.String对象的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#search"><span class="nav-number">12.1.</span> <span class="nav-text">search()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#match"><span class="nav-number">12.2.</span> <span class="nav-text">match()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#split-reg"><span class="nav-number">12.3.</span> <span class="nav-text">split(reg)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#replace"><span class="nav-number">12.4.</span> <span class="nav-text">replace()</span></a></li></ol></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RegExp对象"><span class="nav-number">1.</span> <span class="nav-text">RegExp对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#元字符"><span class="nav-number">2.</span> <span class="nav-text">元字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符类"><span class="nav-number">3.</span> <span class="nav-text">字符类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#范围类"><span class="nav-number">4.</span> <span class="nav-text">范围类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预定义类"><span class="nav-number">5.</span> <span class="nav-text">预定义类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#量词"><span class="nav-number">6.</span> <span class="nav-text">量词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#贪婪与非贪婪模式"><span class="nav-number">7.</span> <span class="nav-text">贪婪与非贪婪模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分组"><span class="nav-number">8.</span> <span class="nav-text">分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前瞻"><span class="nav-number">9.</span> <span class="nav-text">前瞻</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象属性"><span class="nav-number">10.</span> <span class="nav-text">对象属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RegExp对象的方法"><span class="nav-number">11.</span> <span class="nav-text">RegExp对象的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String对象的方法"><span class="nav-number">12.</span> <span class="nav-text">String对象的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#search"><span class="nav-number">12.1.</span> <span class="nav-text">search()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#match"><span class="nav-number">12.2.</span> <span class="nav-text">match()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#split-reg"><span class="nav-number">12.3.</span> <span class="nav-text">split(reg)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#replace"><span class="nav-number">12.4.</span> <span class="nav-text">replace()</span></a></li></ol></li></ol></div>
             
 
           </div>
