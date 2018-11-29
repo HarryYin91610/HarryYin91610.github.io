@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="DeepClone,Javascript,">
+  <meta name="keywords" content="deepClone,javascript,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="背景">
-<meta name="keywords" content="DeepClone,Javascript">
+<meta name="description" content="背景在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。 尝试不同实现方式此时就需要一种算法来合并默认的数据与接口数据">
+<meta name="keywords" content="deepClone,javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深拷贝的实际运用">
 <meta property="og:url" content="http://yoursite.com/2018/11/29/deep-clone/index.html">
 <meta property="og:site_name" content="HarryYin">
-<meta property="og:description" content="背景">
+<meta property="og:description" content="背景在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。 尝试不同实现方式此时就需要一种算法来合并默认的数据与接口数据">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-29T07:40:03.558Z">
+<meta property="og:updated_time" content="2018-11-29T08:55:47.636Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深拷贝的实际运用">
-<meta name="twitter:description" content="背景">
+<meta name="twitter:description" content="背景在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。 尝试不同实现方式此时就需要一种算法来合并默认的数据与接口数据">
 
 
 
@@ -353,7 +353,25 @@
       
 
       
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3>
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。</p>
+<h3 id="尝试不同实现方式"><a href="#尝试不同实现方式" class="headerlink" title="尝试不同实现方式"></a>尝试不同实现方式</h3><p>此时就需要一种算法来合并默认的数据与接口数据，我考虑过使用Object.assign()或者JSON.parse(JSON.stringfy(X))拷贝对象的方法。但事实证明都不合适：</p>
+<ol>
+<li>Object.assign()只是浅拷贝（只是一级属性复制）对于层次很深的数据无法完美拷贝；</li>
+<li>JSON.parse(JSON.stringfy(X))在序列化JavaScript对象时，所有函数和原型成员会被有意忽略，X只能是Number, String, Boolean, Array, 扁平对象，即那些能够被 JSON 直接表示的数据结构。  </li>
+</ol>
+<a id="more"></a>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>最后，我选择自己实现一种深拷贝的方法。   </p>
+<h3 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h3><ol>
+<li>该方法有两个参数，分别为指定格式的默认数据对象、接口返回的数据对象；  </li>
+<li>返回值是一个合并后的新对象；</li>
+<li>合并的逻辑是遍历默认数据对象的所有可枚举属性，分别在接口返回的对象上搜索该属性，若存在且值不为空（不为undefined 或 空字符串）则覆盖默认值；  </li>
+<li>在遇到遍历的属性是对象时，会进一步递归调用深拷贝方法；</li>
+<li>会根据默认的数据对象的constructor来判断结果是数组还是一般对象。</li>
+</ol>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 深度拷贝</span><br><span class="line">export const deepClone = function (target, source) &#123;</span><br><span class="line">  if (typeof target !== &apos;object&apos;) &#123;</span><br><span class="line">    return target</span><br><span class="line">  &#125;</span><br><span class="line">  const res = target.constructor === Array ? [] : &#123;&#125;</span><br><span class="line">  for (const key in target) &#123;</span><br><span class="line">    if (source.hasOwnProperty(key) &amp;&amp; typeof source[key] !== &apos;undefined&apos; &amp;&amp; source[key] !== &apos;&apos;) &#123;</span><br><span class="line">      if (typeof source[key] === &apos;object&apos;) &#123;</span><br><span class="line">        res[key] = deepClone(target[key], source[key])</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        res[key] = source[key]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      res[key] = target[key]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">const obj1 = &#123;</span><br><span class="line">  a: 1,</span><br><span class="line">  b: [1, 2, 3],</span><br><span class="line">  c: &#123;</span><br><span class="line">    c1: 1,</span><br><span class="line">    c2: 2</span><br><span class="line">  &#125;,</span><br><span class="line">  d: [</span><br><span class="line">    &#123;</span><br><span class="line">      name: &apos;d1&apos;,</span><br><span class="line">      id: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      name: &apos;d2&apos;,</span><br><span class="line">      id: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      name: &apos;d3&apos;,</span><br><span class="line">      id: 3</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  e: &#123;</span><br><span class="line">    e1: &#123;</span><br><span class="line">      name: &apos;e1&apos;,</span><br><span class="line">      uid: 3</span><br><span class="line">    &#125;,</span><br><span class="line">    e2: [5, 6, 7],</span><br><span class="line">    e3: 4</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj2 = &#123;</span><br><span class="line">  a: 5,</span><br><span class="line">  b: [11, 22, 33],</span><br><span class="line">  c: &#123;</span><br><span class="line">    c2: 20</span><br><span class="line">  &#125;,</span><br><span class="line">  d: [</span><br><span class="line">    &#123;</span><br><span class="line">      name: &apos;new&apos;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  e: &#123;</span><br><span class="line">    e1: &#123;</span><br><span class="line">      uid: 13</span><br><span class="line">    &#125;,</span><br><span class="line">    e2: [15, 16, 17]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">deepClone(obj1, obj2)</span><br></pre></td></tr></table></figure>
+<p>测试结果：成功，返回的对象是我所期望的数据结构。</p>
+
       
     </div>
     
@@ -370,9 +388,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/DeepClone/" rel="tag"># DeepClone</a>
+            <a href="/tags/deepClone/" rel="tag"># deepClone</a>
           
-            <a href="/tags/Javascript/" rel="tag"># Javascript</a>
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
           
         </div>
       
@@ -394,6 +412,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/29/perfect-fullscreen/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -472,7 +494,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -537,7 +559,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#尝试不同实现方式"><span class="nav-number">2.</span> <span class="nav-text">尝试不同实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本思路"><span class="nav-number">4.</span> <span class="nav-text">基本思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体实现"><span class="nav-number">5.</span> <span class="nav-text">具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">6.</span> <span class="nav-text">测试</span></a></li></ol></div>
             
 
           </div>
