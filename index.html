@@ -271,7 +271,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/19/deploy-website/" itemprop="url">网站部署笔记</a></h1>
+                <a class="post-title-link" href="/2019/02/19/deploy-website/" itemprop="url">个人网站部署笔记</a></h1>
         
 
         <div class="post-meta">
@@ -344,18 +344,21 @@
 
       
         
-          
-            <h3 id="网站内容更新流程"><a href="#网站内容更新流程" class="headerlink" title="网站内容更新流程"></a>网站内容更新流程</h3><ol>
-<li>修改本地代码；</li>
-<li><p>git提交代码到私有仓库；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m &apos;+ update&apos;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>本地运行命令， 同步代码到线上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 deploy ecosystem.json &lt;项目名&gt;</span><br></pre></td></tr></table></figure>
-</li>
+          <h2 id="生产环境要素"><a href="#生产环境要素" class="headerlink" title="生产环境要素"></a>生产环境要素</h2><ol>
+<li>购买自己的域名</li>
+<li>购买自己的服务器</li>
+<li>域名备案（在国内的网站都必须备案）</li>
+<li>配置服务器应用环境</li>
+<li>安装配置数据库</li>
+<li>项目的部署与发布</li>
 </ol>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/19/deploy-website/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -929,7 +932,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -940,7 +943,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
