@@ -344,21 +344,352 @@
 
       
         
-          <h2 id="生产环境要素"><a href="#生产环境要素" class="headerlink" title="生产环境要素"></a>生产环境要素</h2><ol>
-<li>购买自己的域名</li>
-<li>购买自己的服务器</li>
-<li>域名备案（在国内的网站都必须备案）</li>
-<li>配置服务器应用环境</li>
-<li>安装配置数据库</li>
-<li>项目的部署与发布</li>
+          
+            <a id="more"></a>
+<h2 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h2><h3 id="1-购买域名"><a href="#1-购买域名" class="headerlink" title="1 购买域名"></a>1 购买域名</h3><ul>
+<li>厂商选择：阿里云（万网）、爱名网、dnspod，godaddy。为方便备案最终选择阿里云的域名；</li>
+<li>搜索想要的域名前缀，选择纯英文的域名；</li>
+<li>后缀优先选择： .cn， .com， .cc；</li>
+<li>域名需要实名认证。</li>
+</ul>
+<hr>
+<h3 id="2-购买服务器"><a href="#2-购买服务器" class="headerlink" title="2 购买服务器"></a>2 购买服务器</h3><ul>
+<li>厂商选择：亚马逊AWS，阿里云ECS，Linode，Heroku，DigitOcean，青云，UCloud等；</li>
+<li>同样为方便备案选择国内的阿里云；</li>
+<li>公共镜像：Ubuntu 14.04 64位；</li>
+<li>设置root密码</li>
+</ul>
+<hr>
+<h3 id="3-域名备案"><a href="#3-域名备案" class="headerlink" title="3 域名备案"></a>3 域名备案</h3><ul>
+<li>在阿里云直接进行备案，备案完成前首次备案的域名在线上是不允许访问的；</li>
+<li>首先申请备案服务号；</li>
+<li><a href="https://beian.aliyun.com/?spm=a3c00.7621333.1280361.5.67c6kaR0kaR0ch" target="_blank" rel="noopener">完成备案流程</a></li>
+</ul>
+<hr>
+<h3 id="4-ssh远程登录服务器"><a href="#4-ssh远程登录服务器" class="headerlink" title="4 ssh远程登录服务器"></a>4 ssh远程登录服务器</h3><h4 id="4-1-root登录"><a href="#4-1-root登录" class="headerlink" title="4.1 root登录"></a>4.1 root登录</h4><ul>
+<li><p>在mac终端，使用root身份登录：  </p>
+<blockquote>
+<p>a. 输入：ssh root@服务器公网ip；<br>b. 输入之前在服务器设置的密码；<br>c. 出现欢迎信息即完成登录。</p>
+</blockquote>
+</li>
+<li><p>查看硬盘使用的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>退出登录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctrl + d</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="4-2-添加用户配置权限管理服务器"><a href="#4-2-添加用户配置权限管理服务器" class="headerlink" title="4.2 添加用户配置权限管理服务器"></a>4.2 添加用户配置权限管理服务器</h4><ul>
+<li>添加用户<blockquote>
+<p>a. 输入：adduser 用户名；<br>b. 输入密码及确认密码；<br>c. 输入用户信息（可不填）</p>
+</blockquote>
+</li>
+<li><p>对用户进行授权（用户可以通过sudo命令并输入密码来使用权限）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpasswd -a 用户名 sudo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo visudo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在vim界面User privilege specification下加一行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># User privilege specification</span><br><span class="line">用户名 ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输入下面命令保存配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ctrl + x</span><br><span class="line">shift + y 并回车。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启ssh命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service ssh restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用户登录命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh 用户名@服务器ip</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="4-3-ssh配置无密码登录"><a href="#4-3-ssh配置无密码登录" class="headerlink" title="4.3 ssh配置无密码登录"></a>4.3 ssh配置无密码登录</h4><h5 id="4-3-1-在本地终端"><a href="#4-3-1-在本地终端" class="headerlink" title="4.3.1 在本地终端"></a>4.3.1 在本地终端</h5><ul>
+<li><p>进入.ssh文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看是否有id_rsa和id_rsa.pub</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>若没有，则继续下面的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ..</span><br><span class="line">ssh-keygen -t rsa -b 4096 -C &quot;一个邮箱地址&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连续回车，生成公钥和私钥</p>
+</li>
+<li><p>进入.ssh，打印公钥内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd .ssh</span><br><span class="line">cat id_rsa.pub</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行ssh代理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval &quot;$(ssh-agent -s)&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将本机的私钥加入到代理中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-add ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="4-3-2-在服务器端"><a href="#4-3-2-在服务器端" class="headerlink" title="4.3.2 在服务器端"></a>4.3.2 在服务器端</h5><ul>
+<li>登录服务器</li>
+<li><p>同样生成公私钥</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C &quot;一个邮箱地址&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同样运行ssh代理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval &quot;$(ssh-agent -s)&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同样将服务器上的私钥加入到代理中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-add ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入.ssh，生成授权文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi authorized_keys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将刚刚本地生成的公钥写入authorized_keys文件</p>
+</li>
+<li><p>给authorized_keys授权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 600 authorized_keys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启ssh服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service ssh restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>完成用户免密登录</p>
+</li>
+</ul>
+<h4 id="4-4-修改服务器默认登录端口"><a href="#4-4-修改服务器默认登录端口" class="headerlink" title="4.4 修改服务器默认登录端口"></a>4.4 修改服务器默认登录端口</h4><ul>
+<li>登录服务器</li>
+<li><p>修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在sshd_config文件里，修改端口（默认22，不要使用0~1024， 可使用：1025~65535）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Port 39999</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在sshd_config文件里，末尾增加一行（用户名是服务器刚刚添加的用户）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AllowUsers 用户名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存，退出sshd_config文件</p>
+</li>
+<li><p>重启ssh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service ssh restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入sshd_config</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭root密码登录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PermitRootLogin no</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭密码授权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PasswordAuthentication no</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启ssh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service ssh restart</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="4-5-完成配置，使用特定端口登录"><a href="#4-5-完成配置，使用特定端口登录" class="headerlink" title="4.5 完成配置，使用特定端口登录"></a>4.5 完成配置，使用特定端口登录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -p 39999 用户名@服务器ip</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="5-配置iptables-和-fail2ban-增强安全保护"><a href="#5-配置iptables-和-fail2ban-增强安全保护" class="headerlink" title="5 配置iptables 和 fail2ban 增强安全保护"></a>5 配置iptables 和 fail2ban 增强安全保护</h3><ul>
+<li>登录服务器</li>
+<li>更新Ubuntu系统<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update &amp;&amp; sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="5-1-配置iptables"><a href="#5-1-配置iptables" class="headerlink" title="5.1 配置iptables"></a>5.1 配置iptables</h4><p>iptables是隔离主机及网络的工具，通过自己设定的规则及处理动作对数据报文进行检测以及处理。 </p>
+<ul>
+<li><p>清空iptables规则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -F</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/iptables.up.rules</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在文件内添加规则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">*filterss</span><br><span class="line"></span><br><span class="line"># allow all connections</span><br><span class="line">-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT</span><br><span class="line"></span><br><span class="line"># allow out traffic</span><br><span class="line">-A OUTPUT -j ACCEPT</span><br><span class="line"></span><br><span class="line"># allow http https</span><br><span class="line">-A INPUT -p tcp --dport 443 -j ACCEPT</span><br><span class="line">-A INPUT -p tcp --dport 80 -j ACCEPT</span><br><span class="line"></span><br><span class="line"># allow ssh port login</span><br><span class="line">-A INPUT -p tcp -m state --state NEW --dport 7153 -j ACCEPT</span><br><span class="line"></span><br><span class="line"># ping</span><br><span class="line">-A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT</span><br><span class="line"></span><br><span class="line"># log denied calls</span><br><span class="line">-A INPUT -m limit --limit  5/min -j LOG --log-prefix &quot;iptables denied:&quot; --log-level 7</span><br><span class="line"></span><br><span class="line"># drop incoming sensitive connections</span><br><span class="line">-A INPUT -p tcp --dport 80 -i eth0 -m state --state NEW -m recent --set</span><br><span class="line">-A INPUT -p tcp --dport 80 -i eth0 -m state --state NEW -m recent --update --seconds 60 --hitcount 150 -j DROP</span><br><span class="line"></span><br><span class="line"># reject all other inbound</span><br><span class="line">-A INPUT -j REJECT</span><br><span class="line">-A FORWARD -j REJECT</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存配置</p>
+</li>
+<li><p>更新iptables配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables-restore &lt;/etc/iptables.up.rules</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>激活防火墙</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw enable</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看防火墙是否被激活</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw status</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置开机自动启动，打开文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/network/if-up.d/iptables</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写入脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">iptables-restore /etc/iptables.up.rules</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存退出</p>
+</li>
+<li>赋予脚本执行权限<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /etc/network/if-up.d/iptables</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="5-2-配置fail2ban"><a href="#5-2-配置fail2ban" class="headerlink" title="5.2 配置fail2ban"></a>5.2 配置fail2ban</h4><p>fail2ban可以监视你的系统日志，然后匹配日志的错误信息（正则式匹配）执行相应的屏蔽动作（一般情况下是调用防火墙屏蔽），如:当有人在试探你的HTTP、SSH、SMTP、FTP密码，只要达到你预设的次数，fail2ban就会调用防火墙屏蔽这个IP，而且可以发送e-mail通知系统管理员。</p>
+<ul>
+<li><p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install fail2ban</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/fail2ban/jail.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改邮箱地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">destemail = 邮箱地址</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改action</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># globally (section [DEFAULT]) or per specific section</span><br><span class="line">action = %(action_mw)s</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存退出</p>
+</li>
+<li>fail2ban相关命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 查看运行状态</span><br><span class="line">sudo service fail2ban status</span><br><span class="line"># 终止fail2ban</span><br><span class="line">sudo service fail2ban stop</span><br><span class="line"># 开启fail2ban</span><br><span class="line">sudo service fail2ban start</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="6-搭建服务器nodejs环境"><a href="#6-搭建服务器nodejs环境" class="headerlink" title="6 搭建服务器nodejs环境"></a>6 搭建服务器nodejs环境</h3><ul>
+<li><p>安装相关依赖模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vim openssl build-essential libssl-dev wget curl git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">安装nvm，管理node 版本</a></p>
+</li>
+<li><p>安装指定版本nodejs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nvm install v10.15.1</span><br><span class="line">nvm use v10.15.1</span><br><span class="line"># 设置默认版本</span><br><span class="line">nvm alias default v10.15.1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置国内npm淘宝源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm --registry=https://registry.npm.taobao.org install -g npm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置系统文件监控数目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装其他模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i pm2 webpack gulp grunt-cli -g</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="7-借助pm2让nodejs常驻"><a href="#7-借助pm2让nodejs常驻" class="headerlink" title="7 借助pm2让nodejs常驻"></a>7 借助pm2让nodejs常驻</h3><p>pm2是node进程管理工具，可以利用它来简化很多node应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，而且使用非常简单。</p>
+<ul>
+<li>相关命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 启动服务</span><br><span class="line">pm2 start app.js </span><br><span class="line"># 查看服务列表</span><br><span class="line">pm2 list</span><br><span class="line"># 查看某个服务详细信息</span><br><span class="line">pm2 show app</span><br><span class="line"># 查看实时日志</span><br><span class="line">pm2 logs</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="8-nginx端口代理"><a href="#8-nginx端口代理" class="headerlink" title="8 nginx端口代理"></a>8 nginx端口代理</h3><p>Nginx (engine x) 是一个高性能的HTTP和反向代理服务，也是一个IMAP/POP3/SMTP服务。</p>
+<ul>
+<li><p>安装nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -v</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入nginx配置目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/nginx/conf.d</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新增一个nginx配置文件(域名-后缀-端口.conf)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi www-harryyin-cn-8081.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写入配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">upstream example&#123;</span><br><span class="line">  server 127.0.0.1:8081;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name 服务器ip或域名地址（域名解析后）;</span><br><span class="line">  location / &#123;</span><br><span class="line">    proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header Host $http_host;</span><br><span class="line">    proxy_set_header X-Nginx-Proxy true; </span><br><span class="line"></span><br><span class="line">    proxy_pass http://example;</span><br><span class="line">    proxy_redirect off;</span><br><span class="line">  &#125;</span><br><span class="line">  location ~* ^.+\.(html|jpg|jpeg|gif|png|ico|css|js|pdf|txt) &#123;</span><br><span class="line">    root /www/agileui/production/current/dist;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存退出</p>
+</li>
+<li><p>检测配置文件是否有错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nginx -t</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nginx -s reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开nginx主配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/nginx</span><br><span class="line">sudo vi nginx.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改配置在服务器返回内容上隐藏nginx版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Basic Settings</span><br><span class="line">server_tokens off;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重载nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx reload</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="9-域名解析"><a href="#9-域名解析" class="headerlink" title="9 域名解析"></a>9 域名解析</h3><p>域名解析是把域名指向网站空间IP，让人们通过注册的域名可以方便地访问到网站的一种服务。IP地址是网络上标识站点的数字地址，为了方便记忆，采用域名来代替IP地址标识站点地址。域名解析就是域名到IP地址的转换过程。域名的解析工作由DNS服务器完成。</p>
+<h4 id="9-1-更改域名的DNS根服务器"><a href="#9-1-更改域名的DNS根服务器" class="headerlink" title="9.1 更改域名的DNS根服务器"></a>9.1 更改域名的DNS根服务器</h4><p>为了对不同厂商的域名进行批量管理，可以将不同厂商的域名转到DNSPod。</p>
+<ul>
+<li><a href="https://www.dnspod.cn/" target="_blank" rel="noopener">打开DNSPod</a></li>
+<li>注册</li>
+<li><a href="https://support.dnspod.cn/Kb/showarticle/tsid/40/" target="_blank" rel="noopener">进入帮助中心“万网注册商域名修改DNS地址”</a></li>
+<li>找到DNSPod的2个DNS短地址</li>
+<li>打开阿里云所购买域名的管理页面，选择修改DNS</li>
+<li>将这两个短地址填入，完成修改。（大概4~5个小时可完成修改）</li>
+</ul>
+<h4 id="9-2-配置域名解析"><a href="#9-2-配置域名解析" class="headerlink" title="9.2 配置域名解析"></a>9.2 配置域名解析</h4><ul>
+<li><a href="https://www.dnspod.cn/" target="_blank" rel="noopener">打开DNSPod</a></li>
+<li>登录，进入域名解析</li>
+<li>添加一个域名，点击进入管理页面</li>
+<li>添加一条记录，主机记录填子域名、记录类型选择A、记录值填服务器ip</li>
+</ul>
+<hr>
+<h3 id="10-git代码托管（私有仓库）"><a href="#10-git代码托管（私有仓库）" class="headerlink" title="10 git代码托管（私有仓库）"></a>10 git代码托管（私有仓库）</h3><h4 id="10-1-与本地项目关联"><a href="#10-1-与本地项目关联" class="headerlink" title="10.1 与本地项目关联"></a>10.1 与本地项目关联</h4><ul>
+<li>选择一个托管网站：<a href="https://gitee.com/" target="_blank" rel="noopener">码云</a>， <a href="https://github.com/" target="_blank" rel="noopener">github</a>，我选择了码云</li>
+<li>创建一个仓库</li>
+<li>将本地项目初始化为git仓库，并和线上私有仓库进行关联，<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">相关git操作</a></li>
+</ul>
+<h4 id="10-2-与服务器关联"><a href="#10-2-与服务器关联" class="headerlink" title="10.2 与服务器关联"></a>10.2 与服务器关联</h4><ul>
+<li>登录服务器</li>
+<li><p>进入.ssh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打印public key，并复制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat id_rsa.pub</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在码云添加刚刚复制的服务器公钥（标题： Aliyun Ubuntu 14.04 server）</p>
+</li>
+</ul>
+<hr>
+<h3 id="11-配置pm2一键部署线上项目结构"><a href="#11-配置pm2一键部署线上项目结构" class="headerlink" title="11 配置pm2一键部署线上项目结构"></a>11 配置pm2一键部署线上项目结构</h3><p><a href="http://pm2.keymetrics.io/docs/usage/cluster-mode/" target="_blank" rel="noopener">官方文档</a></p>
+<h4 id="11-1-在服务器端"><a href="#11-1-在服务器端" class="headerlink" title="11.1 在服务器端"></a>11.1 在服务器端</h4><ul>
+<li>登录服务器</li>
+<li><p>创建部署的目的文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir /www</span><br><span class="line">cd /www</span><br><span class="line">sudo mkdir /website</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>让用户对新建的文件拥有可读写权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /www</span><br><span class="line">sudo chmod 777 website</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="11-2-在本地项目"><a href="#11-2-在本地项目" class="headerlink" title="11.2 在本地项目"></a>11.2 在本地项目</h4><ul>
+<li>进入本地项目文件夹</li>
+<li><p>新建pm2配置文件ecosystem.json</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;apps&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;name&quot;: &quot;website&quot;, // pm2应用名称</span><br><span class="line">      &quot;script&quot;: &quot;app.js&quot;, // 服务器启动脚本</span><br><span class="line">      &quot;env&quot;: &#123;</span><br><span class="line">        &quot;COMMON_VARIABLE&quot;: &quot;true&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;env_production&quot;: &#123;</span><br><span class="line">        &quot;NODE_ENV&quot;: &quot;production&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;deploy&quot;: &#123;</span><br><span class="line">    &quot;production&quot;: &#123;  // 环境名</span><br><span class="line">      &quot;user&quot;: &quot;manager&quot;, // 服务器登录的用户名</span><br><span class="line">      &quot;host&quot;: [&quot;127.0.0.1&quot;], // 服务器ip，可以多个</span><br><span class="line">      &quot;port&quot;: &quot;8081&quot;, // 服务器登录端口</span><br><span class="line">      &quot;ref&quot;: &quot;origin/master&quot;, // 拉取仓库的分支</span><br><span class="line">      &quot;repo&quot;: &quot;&quot;, // 关联的私有仓库ssh地址</span><br><span class="line">      &quot;path&quot;: &quot;/www/website/production&quot;, // 部署的目录</span><br><span class="line">      &quot;ssh_options&quot;: &quot;StrictHostKeyChecking=no&quot;,</span><br><span class="line">      // 项目部署后在服务器执行的命令</span><br><span class="line">      &quot;post-deploy&quot;: &quot;npm install --registry=https://registry.npm.taobao.org &amp;&amp; pm2 startOrRestart ecosystem.json --env production&quot;,</span><br><span class="line">      &quot;env&quot;: &#123;</span><br><span class="line">        &quot;NODE_ENV&quot;: &quot;production&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行部署项目的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 deploy ecosystem.json production setup</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="11-3-让pm2无交互可运行"><a href="#11-3-让pm2无交互可运行" class="headerlink" title="11.3 让pm2无交互可运行"></a>11.3 让pm2无交互可运行</h4><ul>
+<li>登录服务器</li>
+<li><p>打开.bashrc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi .bashrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注释掉下面的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># If not running interactively, don&apos;t do anything</span><br><span class="line">#case $- in</span><br><span class="line"> #   *i*) ;;</span><br><span class="line"> #     *) return;;</span><br><span class="line">#esac</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存退出</p>
+</li>
+</ul>
+<h4 id="11-4-添加防火墙规则"><a href="#11-4-添加防火墙规则" class="headerlink" title="11.4 添加防火墙规则"></a>11.4 添加防火墙规则</h4><ul>
+<li>登录服务器</li>
+<li><p>打开iptables.up.rules</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/iptables.up.rules</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加规则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># website</span><br><span class="line">-A INPUT -s 127.0.0.1 -p tcp --destination-port 服务的端口号（例 ：8080） -m state --state NEW,ESTABLISHED -j ACCEPT</span><br><span class="line">-A OUTPUT -d 127.0.0.1 -p tcp --source-port 服务的端口号（例 ：8080） -m state --state ESTABLISHED -j ACCEPT</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存退出</p>
+</li>
+<li>重载防火墙<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables-restore &lt;/etc/iptables.up.rules</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="网站内容更新流程"><a href="#网站内容更新流程" class="headerlink" title="网站内容更新流程"></a>网站内容更新流程</h2><ol>
+<li>修改本地代码；</li>
+<li><p>git提交代码到私有仓库；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m &apos;+ update&apos;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>本地运行命令， 同步代码到线上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 deploy ecosystem.json production</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/02/19/deploy-website/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+
+          
         
       
     </div>
