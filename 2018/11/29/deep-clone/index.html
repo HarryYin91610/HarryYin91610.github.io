@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="deepClone,javascript,">
+  <meta name="keywords" content="javascript,deepClone,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="背景在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。 尝试不同实现方式此时就需要一种算法来合并默认的数据与接口数据">
-<meta name="keywords" content="deepClone,javascript">
+<meta name="description" content="背景在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。">
+<meta name="keywords" content="javascript,deepClone">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深拷贝的实际运用">
 <meta property="og:url" content="http://yoursite.com/2018/11/29/deep-clone/index.html">
 <meta property="og:site_name" content="HarryYin">
-<meta property="og:description" content="背景在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。 尝试不同实现方式此时就需要一种算法来合并默认的数据与接口数据">
+<meta property="og:description" content="背景在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-29T08:55:47.636Z">
+<meta property="og:updated_time" content="2019-02-27T09:15:58.257Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深拷贝的实际运用">
-<meta name="twitter:description" content="背景在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。 尝试不同实现方式此时就需要一种算法来合并默认的数据与接口数据">
+<meta name="twitter:description" content="背景在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。">
 
 
 
@@ -353,13 +353,12 @@
       
 
       
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。</p>
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。<br><a id="more"></a></p>
 <h3 id="尝试不同实现方式"><a href="#尝试不同实现方式" class="headerlink" title="尝试不同实现方式"></a>尝试不同实现方式</h3><p>此时就需要一种算法来合并默认的数据与接口数据，我考虑过使用Object.assign()或者JSON.parse(JSON.stringfy(X))拷贝对象的方法。但事实证明都不合适：</p>
 <ol>
 <li>Object.assign()只是浅拷贝（只是一级属性复制）对于层次很深的数据无法完美拷贝；</li>
 <li>JSON.parse(JSON.stringfy(X))在序列化JavaScript对象时，所有函数和原型成员会被有意忽略，X只能是Number, String, Boolean, Array, 扁平对象，即那些能够被 JSON 直接表示的数据结构。  </li>
 </ol>
-<a id="more"></a>
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>最后，我选择自己实现一种深拷贝的方法。   </p>
 <h3 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h3><ol>
 <li>该方法有两个参数，分别为指定格式的默认数据对象、接口返回的数据对象；  </li>
@@ -388,9 +387,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/deepClone/" rel="tag"># deepClone</a>
-          
             <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/deepClone/" rel="tag"># deepClone</a>
           
         </div>
       
@@ -494,7 +493,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -516,7 +515,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -533,6 +532,12 @@
                     <a href="https://github.com/HarryYin91610" target="_blank" title="GitHub">
                       
                         <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://47.92.102.129/" target="_blank" title="AgileUI">
+                      
+                        <i class="fa fa-fw fa-globe"></i>AgileUI</a>
                   </span>
                 
             </div>
