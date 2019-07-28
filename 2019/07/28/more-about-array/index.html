@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="fullscreen,">
+  <meta name="keywords" content="array,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="背景在公司的一个年终活动项目中，设计要求我们实现一个全屏背景视频的效果，按常理来说，这并不是一件麻烦事，fixed定位即可实现；可仔细一想，面对着各式各样大大小小的屏幕尺寸，以及用户自定义的浏览器尺寸，该如何在不改变基本宽高比的情况下完美地去展示视频背景？此处的完美应该是尽可能多地展示整个原始视频内容，不能留白。">
-<meta name="keywords" content="fullscreen">
+<meta name="description" content="什么是数组？数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。">
+<meta name="keywords" content="array">
 <meta property="og:type" content="article">
-<meta property="og:title" content="完美的全屏背景视频展示">
-<meta property="og:url" content="http://yoursite.com/2018/11/30/perfect-fullscreen/index.html">
+<meta property="og:title" content="你了解数组吗？">
+<meta property="og:url" content="http://yoursite.com/2019/07/28/more-about-array/index.html">
 <meta property="og:site_name" content="HarryYin">
-<meta property="og:description" content="背景在公司的一个年终活动项目中，设计要求我们实现一个全屏背景视频的效果，按常理来说，这并不是一件麻烦事，fixed定位即可实现；可仔细一想，面对着各式各样大大小小的屏幕尺寸，以及用户自定义的浏览器尺寸，该如何在不改变基本宽高比的情况下完美地去展示视频背景？此处的完美应该是尽可能多地展示整个原始视频内容，不能留白。">
+<meta property="og:description" content="什么是数组？数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-28T08:18:48.397Z">
+<meta property="og:updated_time" content="2019-07-28T08:20:03.707Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="完美的全屏背景视频展示">
-<meta name="twitter:description" content="背景在公司的一个年终活动项目中，设计要求我们实现一个全屏背景视频的效果，按常理来说，这并不是一件麻烦事，fixed定位即可实现；可仔细一想，面对着各式各样大大小小的屏幕尺寸，以及用户自定义的浏览器尺寸，该如何在不改变基本宽高比的情况下完美地去展示视频背景？此处的完美应该是尽可能多地展示整个原始视频内容，不能留白。">
+<meta name="twitter:title" content="你了解数组吗？">
+<meta name="twitter:description" content="什么是数组？数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/11/30/perfect-fullscreen/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/28/more-about-array/">
 
 
 
 
 
-  <title>完美的全屏背景视频展示 | HarryYin</title>
+  <title>你了解数组吗？ | HarryYin</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/30/perfect-fullscreen/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/28/more-about-array/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="HarryYin">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">完美的全屏背景视频展示</h1>
+          <h1 class="post-title" itemprop="name headline">你了解数组吗？</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-30T15:45:00+08:00">
-                2018-11-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-28T15:10:11+08:00">
+                2019-07-28
               </time>
             
 
@@ -305,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
+                  <a href="/categories/Data-Structure/" itemprop="url" rel="index">
+                    <span itemprop="name">Data Structure</span>
                   </a>
                 </span>
 
@@ -342,16 +342,38 @@
       
 
       
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在公司的一个年终活动项目中，设计要求我们实现一个全屏背景视频的效果，按常理来说，这并不是一件麻烦事，fixed定位即可实现；可仔细一想，面对着各式各样大大小小的屏幕尺寸，以及用户自定义的浏览器尺寸，该如何在不改变基本宽高比的情况下完美地去展示视频背景？此处的完美应该是尽可能多地展示整个原始视频内容，不能留白。</p>
+        <h3 id="什么是数组？"><a href="#什么是数组？" class="headerlink" title="什么是数组？"></a>什么是数组？</h3><p><strong>数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。</strong></p>
 <a id="more"></a>
-<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>参考css中background-size的一个属性cover,这个属性的作用是让背景图占满整个指定大小的区域，同时不改变背景图的宽高比，且尽可能多地展示背景图内容，超出部分会被截掉。这不正是我们所需的展示效果吗？可是视频或者canvas元素又如何去实现呢？</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
-<li>要不改变视频的宽高比，就不能同时让宽高为100%;</li>
-<li>在浏览器大小初始化和改变时，需要进行判断：到底是让宽还是高为100%？<br>我判断的方式是，首先让宽为100%，计算出视频尺寸在等比下的高度，若高度小于浏览器的高度，则需要让高为100%；</li>
-</ol>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>最核心的一个方法就是判断是否该撑满浏览器的高度，若为false则撑满浏览器宽度。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const isFullHeight = function (ratio) &#123;</span><br><span class="line">  // 浏览器宽度最小尺寸1200</span><br><span class="line">  let winWidth = document.documentElement.clientWidth</span><br><span class="line">  winWidth = winWidth &lt; 1200 ? 1200 : winWidth</span><br><span class="line">  const winHeight = document.documentElement.clientHeight</span><br><span class="line">  const sdHeight = winWidth * ratio</span><br><span class="line">  if (sdHeight &lt; winHeight) &#123;</span><br><span class="line">    // 高度撑满</span><br><span class="line">    return true</span><br><span class="line">  &#125;</span><br><span class="line">  return false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>有了这个方法我们就可以通过改变视频或者canvas元素的类来控制其宽高的样式。</p>
+<ul>
+<li><p>第一是<strong>线性表</strong>（Linear List）。顾名思义，线性表就是数据排成像一条线一样的结构。每个线性表上的数据最多只有前和后两个方向。其实除了数组，链表、队列、栈等也是线性表结构。</p><p>而与它相对立的概念是<strong>非线性表</strong>，比如二叉树、堆、图等。之所以叫非线性，是因为，在非线性表中，数据之间并不是简单的前后关系。</p>
+</li>
+<li><p>第二个是<strong>连续的内存空间和相同类型的数据</strong>。正是因为这两个限制，它才有了一个堪称“杀手锏”的特性：“随机访问”。但有利就有弊，这两个限制也让数组的很多操作变得非常低效，比如要想在数组中删除、插入一个数据，为了保证连续性，就需要做大量的数据搬移工作。</p>
 
+</li>
+</ul>
+<hr>
+<h3 id="如何实现随机访问？"><a href="#如何实现随机访问？" class="headerlink" title="如何实现随机访问？"></a>如何实现随机访问？</h3><p>我们知道，计算机会给每个内存单元分配一个地址，计算机通过地址来访问内存中的数据。当计算机需要随机访问数组中的某个元素时，它会首先通过下面的寻址公式，计算出该元素存储的内存地址：</p>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[i]_address = base_address + i * data_type_size</span><br></pre></td></tr></table></figure>
+<p>其中 base_address是第一个数组元素的地址，data_type_size 表示数组中每个元素的大小。</p>
+
+<hr>
+<h3 id="低效的“插入”和“删除”"><a href="#低效的“插入”和“删除”" class="headerlink" title="低效的“插入”和“删除”"></a>低效的“插入”和“删除”</h3><h4 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h4><p>如果在数组的末尾插入元素，那就不需要移动数据了，这时的时间复杂度为 O(1)。但如果在数组的开头插入元素，那所有的数据都需要依次往后移动一位，所以最坏时间复杂度是 O(n)。 因为我们在每个位置插入元素的概率是一样的，所以平均情况时间复杂度为 (1+2+…n)/n=O(n)。</p>
+
+<h4 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h4><p>和插入类似，如果删除数组末尾的数据，则最好情况时间复杂度为 O(1)；如果删除开头的数据，则最坏情况时间复杂度为 O(n)；平均情况时间复杂度也为 O(n)。</p>
+
+<hr>
+<h3 id="数组为什么要从0开始编号？"><a href="#数组为什么要从0开始编号？" class="headerlink" title="数组为什么要从0开始编号？"></a>数组为什么要从0开始编号？</h3><p>从数组存储的内存模型上来看，“下标”最确切的定义应该是“偏移（offset）”。前面也讲到，如果用 a 来表示数组的首地址，a[0] 就是偏移为 0 的位置，也就是首地址，a[k] 就表示偏移 k 个 type_size 的位置，所以计算 a[k] 的内存地址只需要用这个公式：</p>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[k]_address = base_address + k * type_size</span><br></pre></td></tr></table></figure>
+<p>但是，如果数组从 1 开始计数，那我们计算数组元素 a[k] 的内存地址就会变为：</p>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[k]_address = base_address + (k-1)*type_size</span><br></pre></td></tr></table></figure>
+<p>对比两个公式，我们不难发现，从 1 开始编号，每次随机访问数组元素都多了一次减法运算，对于 CPU 来说，就是多了一次减法指令。</p>
+
+<p>不过我认为，上面解释得再多其实都算不上压倒性的证明，说数组起始编号非 0 开始不可。所以我觉得最主要的原因可能是历史原因。</p>
+
+<p>C 语言设计者用 0 开始计数数组下标，之后的 Java、JavaScript 等高级语言都效仿了 C 语言，或者说，为了在一定程度上减少 C 语言程序员学习 Java 的学习成本，因此继续沿用了从 0 开始计数的习惯。实际上，很多语言中数组也并不是从 0 开始计数的，比如 Matlab。甚至还有一些语言支持负数下标，比如 Python。</p>
       
     </div>
     
@@ -368,7 +390,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/fullscreen/" rel="tag"># fullscreen</a>
+            <a href="/tags/array/" rel="tag"># array</a>
           
         </div>
       
@@ -381,8 +403,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/29/deep-clone/" rel="next" title="深拷贝的实际运用">
-                <i class="fa fa-chevron-left"></i> 深拷贝的实际运用
+              <a href="/2019/07/23/ts-complexity/" rel="next" title="时间复杂度与空间复杂度">
+                <i class="fa fa-chevron-left"></i> 时间复杂度与空间复杂度
               </a>
             
           </div>
@@ -391,8 +413,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/19/deploy-website/" rel="prev" title="个人网站部署笔记">
-                个人网站部署笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/28/linked-list/" rel="prev" title="链表">
+                链表 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -543,7 +565,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考"><span class="nav-number">2.</span> <span class="nav-text">思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体实现"><span class="nav-number">4.</span> <span class="nav-text">具体实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是数组？"><span class="nav-number">1.</span> <span class="nav-text">什么是数组？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现随机访问？"><span class="nav-number">2.</span> <span class="nav-text">如何实现随机访问？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#低效的“插入”和“删除”"><span class="nav-number">3.</span> <span class="nav-text">低效的“插入”和“删除”</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插入操作"><span class="nav-number">3.1.</span> <span class="nav-text">插入操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除操作"><span class="nav-number">3.2.</span> <span class="nav-text">删除操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组为什么要从0开始编号？"><span class="nav-number">4.</span> <span class="nav-text">数组为什么要从0开始编号？</span></a></li></ol></div>
             
 
           </div>
