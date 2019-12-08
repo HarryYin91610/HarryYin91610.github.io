@@ -252,6 +252,352 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/08/javascript-review/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HarryYin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pikachu-detective.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HarryYin">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/08/javascript-review/" itemprop="url">JavaScript 基础知识复习（第三章~）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-08T15:20:55+08:00">
+                2019-12-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="script元素常用属性"><a href="#script元素常用属性" class="headerlink" title="script元素常用属性"></a>script元素常用属性</h2><ul>
+<li>async: （可选）表示加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步）。</li>
+<li>defer: （可选）表示加载后续文档元素的过程将和 script.js 的加载并行进行（异步），但是 script.js 的执行要在所有元素解析完成之后，DOMContentLoaded 事件触发之前完成。</li>
+<li>type: （可选）默认text/javascript。</li>
+</ul>
+<p><img src="/2019/12/08/javascript-review/script01.jpeg" alt="async与defer比较"></p>
+<p><strong>注意：没有 defer 或 async，浏览器会立即加载并执行指定的脚本，“立即”指的是在渲染该 script 标签之下的文档元素之前，也就是说不等待后续载入的文档元素，读到就加载并执行。</strong><br><strong>（defer和async只适用于外部脚本文件，会忽略嵌入的脚本设置的defer或async）</strong><br><strong>在现实中，defer的脚本不一定会按照顺序执行，也不一定在DOMContentLoaded事件触发之前执行，因此最好只包含一个defer脚本。</strong></p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h3><ol>
+<li><h4 id="Undefined"><a href="#Undefined" class="headerlink" title="Undefined"></a>Undefined</h4></li>
+<li><h4 id="Null：表示空对象指针"><a href="#Null：表示空对象指针" class="headerlink" title="Null：表示空对象指针"></a>Null：表示空对象指针</h4></li>
+<li><h4 id="Boolean"><a href="#Boolean" class="headerlink" title="Boolean"></a>Boolean</h4></li>
+<li><h4 id="Number：包括整数和双精度数值，保存浮点数的空间是整数的两倍"><a href="#Number：包括整数和双精度数值，保存浮点数的空间是整数的两倍" class="headerlink" title="Number：包括整数和双精度数值，保存浮点数的空间是整数的两倍"></a>Number：包括整数和双精度数值，保存浮点数的空间是整数的两倍</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var octalNum = 070 // 八进制：第一位是0，其余位是0~7</span><br><span class="line">var hexNum = 0xA // 十六进制：前两位是0x,其余是0~9及A~F</span><br><span class="line">var floatNum = 3.125e7 // 等于3.125 * Math.pow(10, 7)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li><p>浮点数值最高精度是17位小数，计算存在舍入误差问题（基于IEEE754数值的浮点计算通病）<a href="https://github.com/camsong/blog/issues/9" target="_blank" rel="noopener">关于浮点数问题的解决方案</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0.1+0.2 === 0.3 // false</span><br><span class="line">0.15+0.15 === 0.3 // true</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ECMAScript能表示的最小数值：Number.MIN_VALUE(5e-324)，ECMAScript能表示的最大数值：Number.MAX_VALUE(1.7976931348623157e+308)，超出范围：Infinity 或 -Infinity</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var result = Number.MAX_VALUE + Number.MAX_VALUE</span><br><span class="line">alert(isFinite(result)) // false</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>NaN与任何值都不相等，包括自己本身</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NaN === NaN // false</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol start="5">
+<li><h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4></li>
+</ol>
+<ul>
+<li>转换成字符串有两种方式：toString和String</li>
+<li>Null和Undefined没有toString()方法</li>
+<li>toString(x) 可以传参数x为转换的基数<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var num = 10</span><br><span class="line">alert(num.toString()) // 10</span><br><span class="line">alert(num.toString(2)) // 1010</span><br><span class="line">alert(num.toString(8)) // 12</span><br><span class="line">alert(num.toString(10)) // 10</span><br><span class="line">alert(num.toString(16)) // a</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="复杂数据类型"><a href="#复杂数据类型" class="headerlink" title="复杂数据类型"></a>复杂数据类型</h3><ul>
+<li>Object</li>
+<li>hasOwnProperty(name)：用于检查给定的属性名是否存在于当前对象中（不是在原型中）</li>
+<li>propertyIsEnumerable(name)：用于检查给定属性是否可使用for-in枚举</li>
+<li>valueOf()：返回对象的字符串、数值、布尔值表示（通常与toString返回值相同）</li>
+</ul>
+<h3 id="typeof操作符"><a href="#typeof操作符" class="headerlink" title="typeof操作符"></a>typeof操作符</h3><ul>
+<li>“undefined”: 表示这个数值未定义，undefined派生自Null。</li>
+<li>“boolean”</li>
+<li>“string”</li>
+<li>“number”</li>
+<li>“object”: 表示这个数值是对象或者Null</li>
+<li>“function”</li>
+</ul>
+<p><strong>注意：typeof对未初始化和未声明的变量都返回”undefined”</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var message;</span><br><span class="line">alert(typeof message); // &quot;undefined&quot;</span><br><span class="line">alert(typeof age); // &quot;undefined&quot;</span><br></pre></td></tr></table></figure></p>
+<h2 id="一元操作符"><a href="#一元操作符" class="headerlink" title="一元操作符"></a>一元操作符</h2><h3 id="位操作符：将64位的数值转化为32位进行计算，表示数值最底层操作，速度更快。"><a href="#位操作符：将64位的数值转化为32位进行计算，表示数值最底层操作，速度更快。" class="headerlink" title="位操作符：将64位的数值转化为32位进行计算，表示数值最底层操作，速度更快。"></a>位操作符：将64位的数值转化为32位进行计算，表示数值最底层操作，速度更快。</h3><p>对于有符号的整数，32位前31位表示数值，第32位表示符号：0为正号，1为负号。<br>负数以二进制补码格式存储：先求这个数值绝对值二进制码，再求其反码（1和0互换），将得到的反码加1.</p>
+<ul>
+<li><h4 id="按位非-：返回数值的反码，等同于操作数的负值减1。"><a href="#按位非-：返回数值的反码，等同于操作数的负值减1。" class="headerlink" title="按位非(~)：返回数值的反码，等同于操作数的负值减1。"></a>按位非(~)：返回数值的反码，等同于操作数的负值减1。</h4></li>
+<li><h4 id="按位与-amp"><a href="#按位与-amp" class="headerlink" title="按位与(&amp;)"></a>按位与(&amp;)</h4></li>
+<li><h4 id="按位或"><a href="#按位或" class="headerlink" title="按位或(|)"></a>按位或(|)</h4></li>
+<li><h4 id="按位异或-：两个操作数对应位相同为0，-不同为1。"><a href="#按位异或-：两个操作数对应位相同为0，-不同为1。" class="headerlink" title="按位异或(^)：两个操作数对应位相同为0， 不同为1。"></a>按位异或(^)：两个操作数对应位相同为0， 不同为1。</h4></li>
+<li><h4 id="左移-lt-lt-：不会影响符号位，空位填充0。"><a href="#左移-lt-lt-：不会影响符号位，空位填充0。" class="headerlink" title="左移(&lt;&lt;)：不会影响符号位，空位填充0。"></a>左移(&lt;&lt;)：不会影响符号位，空位填充0。</h4></li>
+<li><h4 id="有符号的右移-gt-gt-：保留符号位，用符号位的值填充空位。"><a href="#有符号的右移-gt-gt-：保留符号位，用符号位的值填充空位。" class="headerlink" title="有符号的右移(&gt;&gt;)：保留符号位，用符号位的值填充空位。"></a>有符号的右移(&gt;&gt;)：保留符号位，用符号位的值填充空位。</h4></li>
+<li><h4 id="无符号的右移-gt-gt-gt-：空位用0来填充"><a href="#无符号的右移-gt-gt-gt-：空位用0来填充" class="headerlink" title="无符号的右移(&gt;&gt;&gt;)：空位用0来填充"></a>无符号的右移(&gt;&gt;&gt;)：空位用0来填充</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var oldv = 2; // 二进制：10</span><br><span class="line">var newv = oldv &lt;&lt; 5; // 二进制：1000000，等于十进制64</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/05/queue/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HarryYin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pikachu-detective.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HarryYin">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/05/queue/" itemprop="url">队列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-05T23:01:31+08:00">
+                2019-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Data-Structure/" itemprop="url" rel="index">
+                    <span itemprop="name">Data Structure</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="理解“队列”"><a href="#理解“队列”" class="headerlink" title="理解“队列”"></a>理解“队列”</h3><p>队列这个概念非常好理解。你可以把它想象成排队买票，先来的先买，后来的人只能站末尾，不允许插队。<strong>先进者先出，这就是典型的“<strong><strong>队列</strong></strong>”</strong>。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/08/05/queue/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/30/stack/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1419,306 +1765,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/29/deep-clone/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="HarryYin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pikachu-detective.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HarryYin">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/29/deep-clone/" itemprop="url">深拷贝的实际运用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-29T15:38:00+08:00">
-                2018-11-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>在一个实际项目中，需要在接口请求失败或没有数据时展示默认内容，以前遇到这种情况时，最常用的方法是在每一个需要展示的位置进行一次空值判断，但是在数据格式很复杂的情况下，这样的做法会显得很繁琐。于是乎，我就考虑预先设置好所需要的数据格式，并赋予其默认值，在接口有返回数据时进行一次比对，如果该字段接口返回的值不为空则覆盖默认值，否则忽略。<br></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/29/deep-clone/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/25/regexp-notes/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="HarryYin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pikachu-detective.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HarryYin">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/25/regexp-notes/" itemprop="url">JS正则表达式学习笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T10:46:00+08:00">
-                2018-10-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="RegExp对象"><a href="#RegExp对象" class="headerlink" title="RegExp对象"></a>RegExp对象</h3><p><em>Javascript 通过内置对象RegExp支持正则表达式</em></p>
-<p>有两种方法实例化RegExp对象:</p>
-<ol>
-<li>字面量  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var reg = /\bis\b/g;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/25/regexp-notes/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1764,7 +1817,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1775,7 +1828,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1786,7 +1839,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
