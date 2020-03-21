@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="自由だ">
+<meta name="description" content="Node节点关系属性 childNodes：每个节点都有一个childNodes属性，保存着一个NodeList对象（类数组对象） 123var firstChild = someNode.childNodes[0];var secondChild = someNode.childNodes.item(1);var arrayOfNodes = Array.prototype.slice.call">
 <meta name="keywords" content="review">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript 基础知识复习（第十章）">
 <meta property="og:url" content="http://yoursite.com/2019/12/25/javascript-review5/index.html">
 <meta property="og:site_name" content="HarryYin">
-<meta property="og:description" content="自由だ">
+<meta property="og:description" content="Node节点关系属性 childNodes：每个节点都有一个childNodes属性，保存着一个NodeList对象（类数组对象） 123var firstChild = someNode.childNodes[0];var secondChild = someNode.childNodes.item(1);var arrayOfNodes = Array.prototype.slice.call">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-25T15:15:19.837Z">
+<meta property="og:updated_time" content="2019-12-30T14:58:36.304Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript 基础知识复习（第十章）">
-<meta name="twitter:description" content="自由だ">
+<meta name="twitter:description" content="Node节点关系属性 childNodes：每个节点都有一个childNodes属性，保存着一个NodeList对象（类数组对象） 123var firstChild = someNode.childNodes[0];var secondChild = someNode.childNodes.item(1);var arrayOfNodes = Array.prototype.slice.call">
 
 
 
@@ -342,7 +342,103 @@
       
 
       
-        
+        <h2 id="Node节点关系"><a href="#Node节点关系" class="headerlink" title="Node节点关系"></a>Node节点关系</h2><h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><ul>
+<li><p>childNodes：每个节点都有一个childNodes属性，保存着一个NodeList对象（类数组对象）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var firstChild = someNode.childNodes[0];</span><br><span class="line">var secondChild = someNode.childNodes.item(1);</span><br><span class="line">var arrayOfNodes = Array.prototype.slice.call(someNode.childNodes,0); // 将NodeList转化为数组</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>parentNode：每个节点都有parentNode属性，指向其父节点</p>
+</li>
+<li>previousSibling、nextSibling：每个节点都有这两个属性，指向其同胞节点，其中首子节点的previousSibling为null，最后一个子节点的nextSibling为null。</li>
+<li>firstChild、lastChild：父节点有这两个属性分别指向childNodes列表中的第一个和最后一个子节点。</li>
+</ul>
+<a id="more"></a>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><ul>
+<li>hasChildNodes：判断是否有子节点。</li>
+</ul>
+<h2 id="操作Node节点"><a href="#操作Node节点" class="headerlink" title="操作Node节点"></a>操作Node节点</h2><h3 id="方法-1"><a href="#方法-1" class="headerlink" title="方法"></a>方法</h3><ul>
+<li><p>appendChild()：在childNodes末尾添加一个节点，并返回添加的节点。<br><strong>注意：如果添加的节点已经是文档的一部分，该方法则会将该节点从原来位置移动到新位置。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var returnedNode = someNode.appendChild(someNode.firstChild); // 将第一个节点移动到末尾</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>insertBefore(newNode, referNode)：将节点插入到参照节点的前面（previousSibling），并将插入的节点返回。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var returnedNode = someNode.insertBefore(newNode, someNode.firstChild);</span><br><span class="line">alert(returnedNode === someNode.firstChild); // true</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>replaceChild(newNode, OriginNode)：将新节点替换旧节点，同时删除并返回旧节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var returnedNode = someNode.replaceChild(newNode, someNode.firstChild);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>removeChild(targetChild)：移除并返回目标节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var formerFirstChild = someNode.removeChild(someNode.firstChild);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>cloneNode(deep)：复制一个节点，只接受一个参数表示是否执行深复制（深复制会复制节点及其整个子节点树），复制之后还需要通过appendChild、insertBefore、replaceChild才能将它添加到文档中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var deepList = myList.cloneNode(true); // myList是一个ul节点，有三个li子节点，deepList则同样有三个li</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>normalize()：处理文本节点，包括删除空文本节点，合并子文本节点。</p>
+</li>
+</ul>
+<hr>
+<h2 id="node类型-nodeType"><a href="#node类型-nodeType" class="headerlink" title="node类型(nodeType)"></a>node类型(nodeType)</h2><ul>
+<li>1：元素类型节点</li>
+<li>2: Attr类型节点</li>
+<li>3：文本类型节点</li>
+<li>8：注释类型节点（comment）</li>
+<li>9：document类型节点</li>
+<li>10：DocumentType类型节点</li>
+<li>11：DocumentFragment类型节点（文档片段）</li>
+</ul>
+<hr>
+<h3 id="元素类型节点"><a href="#元素类型节点" class="headerlink" title="元素类型节点"></a>元素类型节点</h3><h4 id="HTML元素标准特性（通过dom访问）"><a href="#HTML元素标准特性（通过dom访问）" class="headerlink" title="HTML元素标准特性（通过dom访问）"></a>HTML元素标准特性（通过dom访问）</h4><ul>
+<li>id</li>
+<li>title</li>
+<li>lang：元素内容的语言代码；</li>
+<li>dir：语言的方向（ltr 从左往右，rtl 从右往左）；</li>
+<li>className: 与元素class特性对应；</li>
+</ul>
+<h4 id="操作元素的特性"><a href="#操作元素的特性" class="headerlink" title="操作元素的特性"></a>操作元素的特性</h4><ul>
+<li>getAttribute()</li>
+<li>setAttribute()</li>
+<li>removeAttribute()</li>
+</ul>
+<h4 id="创建元素"><a href="#创建元素" class="headerlink" title="创建元素"></a>创建元素</h4><ul>
+<li>createElement(tagname)：创建一个与标签名对应的元素。（不区分大小写）<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var div = document.createElement(&apos;div&apos;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>注意：创建完元素后还需要通过appendChild、insertBefore或者replaceChild把元素添加到文档中。</strong></p>
+<hr>
+<h3 id="document类型节点"><a href="#document类型节点" class="headerlink" title="document类型节点"></a>document类型节点</h3><h4 id="document对象的属性"><a href="#document对象的属性" class="headerlink" title="document对象的属性"></a>document对象的属性</h4><ul>
+<li>documentElement：指向html元素；</li>
+<li>body：指向body元素；</li>
+<li>title： 可以查看或者设置文档title标题；</li>
+<li>URL：当前页面的完整链接；</li>
+<li><p>domain：当前页面的域名；（松散的域名不能再设置为紧绷的）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">document.domain = &apos;wrox.com&apos;; // 松散的</span><br><span class="line">document.domain = &apos;p2p.wrox.com&apos; // 紧绷的</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>referrer：请求当前页面的来源页面的链接（没有则为空字符串）。<br><strong>注意：如果当前页面URL包含子域名，如p2p.wrox.com，那么只能将domain设置为”wrox.com”</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 假设页面来自p2p.wrox.com域</span><br><span class="line">document.domain = &apos;wrox.com&apos;; // 成功</span><br><span class="line">document.domain = &apos;nczonline.net&apos;; // 失败</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>domain的用途：<br><strong>当页面中包括来自其他子域的框架或者内嵌框架时，通过设置domain为同一个主域，则能互相访问对方的javascript对象。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一个页面加载自www.wrox.com,包含一个内嵌框架页面加载自p2p.wrox.com，由于domain不同不能互相通信，如果将domain设置成wrox.com则可以解决。</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="document获取元素的方法"><a href="#document获取元素的方法" class="headerlink" title="document获取元素的方法"></a>document获取元素的方法</h4><ul>
+<li>getElementById(id)</li>
+<li>getElementsByTagName(tagname)</li>
+<li>getElementsByName(name)：返回所有带有name特性的元素。</li>
+</ul>
+<h4 id="文档写入"><a href="#文档写入" class="headerlink" title="文档写入"></a>文档写入</h4><ul>
+<li>write()</li>
+<li>writeln()：会在写入的字符串末尾添加换行符(\n)。</li>
+<li>open()：打开网页输出流。</li>
+<li>close()：关闭网页输出流。<br><strong>通过动态写入可以动态引入外部资源</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.write(&apos;&lt;script type=&quot;\&quot;text/&gt;javascript\&quot; src=\&quot;file.js\&quot;&quot;&gt;&apos; + &apos;&lt;\/script&gt;&apos;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="文本类型节点"><a href="#文本类型节点" class="headerlink" title="文本类型节点"></a>文本类型节点</h3><h4 id="createTextNode-：创建文本节点"><a href="#createTextNode-：创建文本节点" class="headerlink" title="createTextNode()：创建文本节点"></a>createTextNode()：创建文本节点</h4><h4 id="normalize-：合并相邻文本节点"><a href="#normalize-：合并相邻文本节点" class="headerlink" title="normalize()：合并相邻文本节点"></a>normalize()：合并相邻文本节点</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var element = document.createElement(&apos;div&apos;);</span><br><span class="line">element.className = &apos;message&apos;;</span><br><span class="line"></span><br><span class="line">var textNode = document.createTextNode(&apos;Hello world&apos;);</span><br><span class="line">element.appendChild(textNode);</span><br><span class="line"></span><br><span class="line">var textNode2 = document.createTextNode(&apos;Hello world2&apos;);</span><br><span class="line">element.appendChild(textNode2);</span><br><span class="line"></span><br><span class="line">alert(element.childNodes.length); // 2</span><br><span class="line"></span><br><span class="line">element.normalize();</span><br><span class="line">alert(element.childNodes.length); // 1</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="注释类型节点"><a href="#注释类型节点" class="headerlink" title="注释类型节点"></a>注释类型节点</h3><h4 id="createComment-str-：创建注释节点"><a href="#createComment-str-：创建注释节点" class="headerlink" title="createComment(str)：创建注释节点"></a>createComment(str)：创建注释节点</h4><hr>
+<h3 id="DocumentFragment类型节点（文档片段）"><a href="#DocumentFragment类型节点（文档片段）" class="headerlink" title="DocumentFragment类型节点（文档片段）"></a>DocumentFragment类型节点（文档片段）</h3><p>文档片段不能直接添加到文档中，但可以作为“仓库”来使用，保存将来可能会添加的文档节点。<br>通过appendChild、insertBefore将文档片段添加到文档中时，<strong>文档片段本身永远不会成为文档树的一部分，只会将它的所有子节点添加到文档树上。</strong></p>
+<h4 id="createDocumentFragment-：创建文档片段"><a href="#createDocumentFragment-：创建文档片段" class="headerlink" title="createDocumentFragment()：创建文档片段"></a>createDocumentFragment()：创建文档片段</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var fragment = document.createDocumentFragment();</span><br><span class="line">var ul = document.getElementById(&apos;myList&apos;);</span><br><span class="line">var li = null;</span><br><span class="line">for (var i = 0; i &lt; 3; i++) &#123;</span><br><span class="line">  li = document.createElement(&apos;li&apos;);</span><br><span class="line">  li.appendChild(document.createTextNode(&apos;item &apos; + (i+1)));</span><br><span class="line">  fragment.appendChild(li);</span><br><span class="line">&#125;</span><br><span class="line">ul.appendChild(fragment);</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="动态脚本"><a href="#动态脚本" class="headerlink" title="动态脚本"></a>动态脚本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function loadScript (url) &#123;</span><br><span class="line">  var script = document.createElement(&apos;script&apos;);</span><br><span class="line">  script.type = &apos;text/javascript&apos;;</span><br><span class="line">  script.src = url;</span><br><span class="line">  document.body.appendChild(script);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">loadScript(&apos;client.js&apos;);</span><br></pre></td></tr></table></figure>
+<h2 id="动态样式"><a href="#动态样式" class="headerlink" title="动态样式"></a>动态样式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function loadStyle (url) &#123;</span><br><span class="line">  var link = document.createElement(&apos;link&apos;);</span><br><span class="line">  link.rel = &apos;stylesheet&apos;;</span><br><span class="line">  link.type = &apos;text/css&apos;;</span><br><span class="line">  link.href = url;</span><br><span class="line">  var head = document.getElementsByTagName(&apos;head&apos;)[0];</span><br><span class="line">  head.appendChild(link);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -381,6 +477,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/30/javascript-review6/" rel="prev" title="JavaScript 基础知识复习（第十一章）">
+                JavaScript 基础知识复习（第十一章） <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -432,8 +532,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -450,7 +559,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -461,7 +570,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -512,6 +621,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Node节点关系"><span class="nav-number">1.</span> <span class="nav-text">Node节点关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#属性"><span class="nav-number">1.1.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">1.2.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作Node节点"><span class="nav-number">2.</span> <span class="nav-text">操作Node节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法-1"><span class="nav-number">2.1.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node类型-nodeType"><span class="nav-number">3.</span> <span class="nav-text">node类型(nodeType)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#元素类型节点"><span class="nav-number">3.1.</span> <span class="nav-text">元素类型节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTML元素标准特性（通过dom访问）"><span class="nav-number">3.1.1.</span> <span class="nav-text">HTML元素标准特性（通过dom访问）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作元素的特性"><span class="nav-number">3.1.2.</span> <span class="nav-text">操作元素的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建元素"><span class="nav-number">3.1.3.</span> <span class="nav-text">创建元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document类型节点"><span class="nav-number">3.2.</span> <span class="nav-text">document类型节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#document对象的属性"><span class="nav-number">3.2.1.</span> <span class="nav-text">document对象的属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#document获取元素的方法"><span class="nav-number">3.2.2.</span> <span class="nav-text">document获取元素的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文档写入"><span class="nav-number">3.2.3.</span> <span class="nav-text">文档写入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本类型节点"><span class="nav-number">3.3.</span> <span class="nav-text">文本类型节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#createTextNode-：创建文本节点"><span class="nav-number">3.3.1.</span> <span class="nav-text">createTextNode()：创建文本节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#normalize-：合并相邻文本节点"><span class="nav-number">3.3.2.</span> <span class="nav-text">normalize()：合并相邻文本节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注释类型节点"><span class="nav-number">3.4.</span> <span class="nav-text">注释类型节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#createComment-str-：创建注释节点"><span class="nav-number">3.4.1.</span> <span class="nav-text">createComment(str)：创建注释节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DocumentFragment类型节点（文档片段）"><span class="nav-number">3.5.</span> <span class="nav-text">DocumentFragment类型节点（文档片段）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#createDocumentFragment-：创建文档片段"><span class="nav-number">3.5.1.</span> <span class="nav-text">createDocumentFragment()：创建文档片段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态脚本"><span class="nav-number">4.</span> <span class="nav-text">动态脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态样式"><span class="nav-number">5.</span> <span class="nav-text">动态样式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -525,7 +650,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
