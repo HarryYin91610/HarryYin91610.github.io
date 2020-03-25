@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="review,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="构建配置抽离成npm包通用性：  业务开发者无需关注构建配置； 统一团队构建脚本；  可维护性：  构建配置合理拆分； README文档、ChangeLog文档；  质量：  冒烟测试、单元测试、测试覆盖率； 持续集成；">
+<meta name="keywords" content="review">
+<meta property="og:type" content="article">
+<meta property="og:title" content="玩转 webpack (四)">
+<meta property="og:url" content="http://yoursite.com/2020/03/24/play-with-webpack4/index.html">
+<meta property="og:site_name" content="HarryYin">
+<meta property="og:description" content="构建配置抽离成npm包通用性：  业务开发者无需关注构建配置； 统一团队构建脚本；  可维护性：  构建配置合理拆分； README文档、ChangeLog文档；  质量：  冒烟测试、单元测试、测试覆盖率； 持续集成；">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/03/24/play-with-webpack4/structure1.png">
+<meta property="og:updated_time" content="2020-03-25T11:00:09.943Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="玩转 webpack (四)">
+<meta name="twitter:description" content="构建配置抽离成npm包通用性：  业务开发者无需关注构建配置； 统一团队构建脚本；  可维护性：  构建配置合理拆分； README文档、ChangeLog文档；  质量：  冒烟测试、单元测试、测试覆盖率； 持续集成；">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/24/play-with-webpack4/structure1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":10,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/24/play-with-webpack4/">
+
+
+
+
+
+  <title>玩转 webpack (四) | HarryYin</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HarryYin</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just a dreamer...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/24/play-with-webpack4/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HarryYin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pikachu-detective.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HarryYin">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">玩转 webpack (四)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-24T18:54:05+08:00">
+                2020-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Webpack/" itemprop="url" rel="index">
+                    <span itemprop="name">Webpack</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="构建配置抽离成npm包"><a href="#构建配置抽离成npm包" class="headerlink" title="构建配置抽离成npm包"></a>构建配置抽离成npm包</h2><p>通用性：</p>
+<ul>
+<li>业务开发者无需关注构建配置；</li>
+<li>统一团队构建脚本；</li>
+</ul>
+<p>可维护性：</p>
+<ul>
+<li>构建配置合理拆分；</li>
+<li>README文档、ChangeLog文档；</li>
+</ul>
+<p>质量：</p>
+<ul>
+<li>冒烟测试、单元测试、测试覆盖率；</li>
+<li>持续集成；</li>
+</ul>
+<a id="more"></a>
+<h3 id="构建配置管理的可选方案"><a href="#构建配置管理的可选方案" class="headerlink" title="构建配置管理的可选方案"></a>构建配置管理的可选方案</h3><ul>
+<li>多个配置文件管理不同环境的构建，通过 webpack –config进行控制；</li>
+<li>构建配置封装成库，如：hjs-webpack、Neutrino、webpack-blocks；</li>
+<li>抽成命令行构建工具，如：create-react-app；（适合大规模团队）</li>
+<li>所有配置放在一个文件里，通过–env参数控制分支选择；</li>
+</ul>
+<h3 id="构建配置包设计"><a href="#构建配置包设计" class="headerlink" title="构建配置包设计"></a>构建配置包设计</h3><p>多个配置文件管理不同环境webpack配置：</p>
+<ul>
+<li>基础配置：webpack.base.js；</li>
+<li>开发环境：webpack.dev.js；</li>
+<li>生产环境：webpack.prod.js；</li>
+<li>SSR环境：webpack.ssr.js；</li>
+</ul>
+<p>抽离成npm包统一管理：</p>
+<ul>
+<li>规范：git commit日志、README、eslint规范、semver规范（语义化版本）；</li>
+<li>质量：冒烟测试、单元测试、测试覆盖率和CI（持续集成）；</li>
+</ul>
+<h3 id="组合配置"><a href="#组合配置" class="headerlink" title="组合配置"></a>组合配置</h3><p>通过webpack-merge组合配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const merge = require(&apos;webpack-merge&apos;);</span><br><span class="line"></span><br><span class="line">merge(</span><br><span class="line">  &#123; a: [1], b: 5, c: 20 &#125;,</span><br><span class="line">  &#123; a: [2], b: 10, d: 421 &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// 合并结果</span><br><span class="line">&#123; </span><br><span class="line">  a: [1, 2], b: 10, c: 20, d: 421</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 导出</span><br><span class="line">module.exports = merge(config1, config2)</span><br></pre></td></tr></table></figure>
+<h3 id="功能模块设计"><a href="#功能模块设计" class="headerlink" title="功能模块设计"></a>功能模块设计</h3><p><img width="600px" height="auto" style="float: left;" src="/2020/03/24/play-with-webpack4/structure1.png"></p>
+<div style="clear: both"></div>
+
+<h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><p>lib存放源代码，test存放测试代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">|- /test</span><br><span class="line">|- / lib</span><br><span class="line">  |- /webpack.dev.js</span><br><span class="line">  |- /webpack.prod.js</span><br><span class="line">  |- /webpack.ssr.js</span><br><span class="line">  |- /webpack.base.js</span><br><span class="line">|- README.md</span><br><span class="line">|- CHANGELOG.md</span><br><span class="line">|- .eslintrc.js</span><br><span class="line">|- package.json</span><br><span class="line">|- index.js</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用eslint规范构建脚本"><a href="#使用eslint规范构建脚本" class="headerlink" title="使用eslint规范构建脚本"></a>使用eslint规范构建脚本</h3><p>使用eslint-config-airbnb-base （构建脚本无需包含框架语法：vue、react）</p>
+<p>小诀窍：可以自动处理空格、逗号、换行等小问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint --fix</span><br></pre></td></tr></table></figure></p>
+<p>需安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D babel-eslint eslint eslint-config-airbnb-base eslint-plugin-import</span><br></pre></td></tr></table></figure></p>
+<p>.eslintrc.js配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  parser: &quot;babel-eslint&quot;, // 解析器</span><br><span class="line">  extends: &quot;airbnb-base&quot;, // 继承airbnb配置</span><br><span class="line">  env: &#123;</span><br><span class="line">    browser: true,</span><br><span class="line">    node: true</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>配置运行命令脚本：（package.json）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;eslint&quot;: &quot;eslint ./lib --fix&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意：因为整个构建包需要发布，构建里用到的插件依赖需要记录到dependencies里（非dev）</strong></p>
+<hr>
+<h2 id="冒烟测试的运用"><a href="#冒烟测试的运用" class="headerlink" title="冒烟测试的运用"></a>冒烟测试的运用</h2><p>定义：冒烟测试是指提交测试的软件在进行深入测试之前而进行的预测试，主要目的是暴露会导致软件重新发布的严重问题（例如基本功能失效等）。</p>
+<p><strong>构建包执行冒烟测试需要检查：</strong></p>
+<ul>
+<li>构建是否成功；</li>
+<li>每次构建的输出目录是否有内容产生；<br>（是否有js、css等静态文件；是否有html文件）</li>
+</ul>
+<h3 id="检查构建是否成功："><a href="#检查构建是否成功：" class="headerlink" title="检查构建是否成功："></a>检查构建是否成功：</h3><p>示例：smoke/index.js<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">const path = require(&apos;path&apos;);</span><br><span class="line">const webpack = require(&apos;webpack&apos;);</span><br><span class="line">const rimraf = require(&apos;rimraf&apos;);</span><br><span class="line">const Mocha = require(&apos;mocha&apos;);</span><br><span class="line"></span><br><span class="line">const mocha = new Mocha(&#123;</span><br><span class="line">  timeout: &apos;10000ms&apos;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 进入template目录</span><br><span class="line">process.chdir(path.join(__dirname, &apos;template&apos;));</span><br><span class="line"></span><br><span class="line">// 清空dist文件夹</span><br><span class="line">rimraf(&apos;./dist&apos;, () =&gt; &#123;</span><br><span class="line">  const prodConfig = require(&apos;../../lib/webpack.prod&apos;); // eslint-disable-line</span><br><span class="line">  // 清空后回调，运行打包配置</span><br><span class="line">  webpack(prodConfig, (err, stats) =&gt; &#123;</span><br><span class="line">    if (err) &#123;</span><br><span class="line">      console.log(&apos;build error&apos;);</span><br><span class="line">      console.log(err); // eslint-disable-line</span><br><span class="line">      // 抛出错误码</span><br><span class="line">      process.exit(2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    console.log(stats.toString(&#123; // eslint-disable-line</span><br><span class="line">      colors: true,</span><br><span class="line">      modules: false,</span><br><span class="line">      children: false,</span><br><span class="line">    &#125;));</span><br><span class="line"></span><br><span class="line">    console.log(&apos;Webpack build success, begin run test&apos;); // eslint-disable-line</span><br><span class="line"></span><br><span class="line">    mocha.addFile(path.join(__dirname, &apos;html-test.js&apos;)); // mocha测试用例</span><br><span class="line">    mocha.addFile(path.join(__dirname, &apos;css-js-test.js&apos;)); // mocha测试用例</span><br><span class="line"></span><br><span class="line">    mocha.run();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="检查基本功能是否正常：（使用mocha测试框架）"><a href="#检查基本功能是否正常：（使用mocha测试框架）" class="headerlink" title="检查基本功能是否正常：（使用mocha测试框架）"></a>检查基本功能是否正常：（使用mocha测试框架）</h3><p>示例：html-test.js<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 检查是否生成了html文件</span><br><span class="line">const glob = require(&apos;glob-all&apos;);</span><br><span class="line"></span><br><span class="line">describe(&apos;Checking generated html files&apos;, () =&gt; &#123;</span><br><span class="line">  it(&apos;should generate html files&apos;, (done) =&gt; &#123;</span><br><span class="line">    const files = glob.sync([</span><br><span class="line">      &apos;./dist/index.html&apos;,</span><br><span class="line">      &apos;./dist/search.html&apos;,</span><br><span class="line">    ]);</span><br><span class="line"></span><br><span class="line">    if (files.length &gt; 0) &#123;</span><br><span class="line">      done();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      throw new Error(&apos;no html files generated&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="单元测试与测试覆盖率"><a href="#单元测试与测试覆盖率" class="headerlink" title="单元测试与测试覆盖率"></a>单元测试与测试覆盖率</h2><h3 id="测试工具分类："><a href="#测试工具分类：" class="headerlink" title="测试工具分类："></a>测试工具分类：</h3><ul>
+<li>单纯的测试框架（需要断言库：chai、should.js、expect、better-assert）：mocha、ava；</li>
+<li>集成框架，开箱即用：jasmine、jest；</li>
+<li>极简API；</li>
+</ul>
+<h3 id="编写单元测试用例："><a href="#编写单元测试用例：" class="headerlink" title="编写单元测试用例："></a>编写单元测试用例：</h3><ul>
+<li>使用：mocha + chai</li>
+<li>api: describe（描述测试文件）、it（一个it表示一个测试用例）、expect（断言）</li>
+<li>测试命令：mocha test.js</li>
+</ul>
+<h3 id="单元测试接入："><a href="#单元测试接入：" class="headerlink" title="单元测试接入："></a>单元测试接入：</h3><ol>
+<li><p>安装 mocha + chai + assert；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i mocha chai assert -D</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建test目录，添加index.js测试入口文件；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const path = require(&apos;path&apos;);</span><br><span class="line"></span><br><span class="line">process.chdir(path.join(__dirname, &apos;smoke/template&apos;));</span><br><span class="line"></span><br><span class="line">describe(&apos;builder-webpack test case&apos;, () =&gt; &#123;</span><br><span class="line">  require(&apos;./unit/webpack-base-test&apos;); // 引入单元测试文件</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>单元测试文件，测试用例编写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const assert = require(&apos;assert&apos;);</span><br><span class="line"></span><br><span class="line">describe(&apos;webpack.base.js test case&apos;, () =&gt; &#123;</span><br><span class="line">  const baseConfig = require(&apos;../../lib/webpack.base.js&apos;);</span><br><span class="line"></span><br><span class="line">  it(&apos;entry&apos;, () =&gt; &#123;</span><br><span class="line">    assert.equal(baseConfig.entry.index, &apos;/Users/harryyin/Documents/fe-workspace/webpack-test/builder-webpack/test/smoke/template/src/index/index.js&apos;);</span><br><span class="line">    assert.equal(baseConfig.entry.search, &apos;/Users/harryyin/Documents/fe-workspace/webpack-test/builder-webpack/test/smoke/template/src/search/index.js&apos;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在package.json中新增test脚本；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;node_modules/mocha/bin/_mocha&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行测试命令；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run test</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="测试覆盖率"><a href="#测试覆盖率" class="headerlink" title="测试覆盖率"></a>测试覆盖率</h3><p>安装使用istanbul：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i istanbul -D</span><br></pre></td></tr></table></figure></p>
+<p>修改package.json的命令脚本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;istanbul cover ./node_modules/.bin/mocha&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/review/" rel="tag"># review</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/22/play-with-webpack3/" rel="next" title="玩转 webpack (三)">
+                <i class="fa fa-chevron-left"></i> 玩转 webpack (三)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/pikachu-detective.jpg" alt="HarryYin">
+            
+              <p class="site-author-name" itemprop="name">HarryYin</p>
+              <p class="site-description motion-element" itemprop="description">自由だ</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/HarryYin91610" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://agileui.harryyin.cn" target="_blank" title="AgileUI">
+                      
+                        <i class="fa fa-fw fa-globe"></i>AgileUI</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建配置抽离成npm包"><span class="nav-number">1.</span> <span class="nav-text">构建配置抽离成npm包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建配置管理的可选方案"><span class="nav-number">1.1.</span> <span class="nav-text">构建配置管理的可选方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建配置包设计"><span class="nav-number">1.2.</span> <span class="nav-text">构建配置包设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合配置"><span class="nav-number">1.3.</span> <span class="nav-text">组合配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能模块设计"><span class="nav-number">1.4.</span> <span class="nav-text">功能模块设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">1.5.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用eslint规范构建脚本"><span class="nav-number">1.6.</span> <span class="nav-text">使用eslint规范构建脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冒烟测试的运用"><span class="nav-number">2.</span> <span class="nav-text">冒烟测试的运用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检查构建是否成功："><span class="nav-number">2.1.</span> <span class="nav-text">检查构建是否成功：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查基本功能是否正常：（使用mocha测试框架）"><span class="nav-number">2.2.</span> <span class="nav-text">检查基本功能是否正常：（使用mocha测试框架）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单元测试与测试覆盖率"><span class="nav-number">3.</span> <span class="nav-text">单元测试与测试覆盖率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试工具分类："><span class="nav-number">3.1.</span> <span class="nav-text">测试工具分类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写单元测试用例："><span class="nav-number">3.2.</span> <span class="nav-text">编写单元测试用例：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试接入："><span class="nav-number">3.3.</span> <span class="nav-text">单元测试接入：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试覆盖率"><span class="nav-number">3.4.</span> <span class="nav-text">测试覆盖率</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HarryYin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
