@@ -88,7 +88,9 @@
 <meta property="og:description" content="构建配置抽离成npm包通用性：  业务开发者无需关注构建配置； 统一团队构建脚本；  可维护性：  构建配置合理拆分； README文档、ChangeLog文档；  质量：  冒烟测试、单元测试、测试覆盖率； 持续集成；">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/03/24/play-with-webpack4/structure1.png">
-<meta property="og:updated_time" content="2020-03-25T11:00:09.943Z">
+<meta property="og:image" content="http://yoursite.com/2020/03/24/play-with-webpack4/gitcommit.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/24/play-with-webpack4/commit-format.png">
+<meta property="og:updated_time" content="2020-03-28T10:00:09.137Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="玩转 webpack (四)">
 <meta name="twitter:description" content="构建配置抽离成npm包通用性：  业务开发者无需关注构建配置； 统一团队构建脚本；  可维护性：  构建配置合理拆分； README文档、ChangeLog文档；  质量：  冒烟测试、单元测试、测试覆盖率； 持续集成；">
@@ -429,6 +431,64 @@
 </ol>
 <h3 id="测试覆盖率"><a href="#测试覆盖率" class="headerlink" title="测试覆盖率"></a>测试覆盖率</h3><p>安装使用istanbul：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i istanbul -D</span><br></pre></td></tr></table></figure></p>
 <p>修改package.json的命令脚本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;istanbul cover ./node_modules/.bin/mocha&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="持续集成和Travis-CI"><a href="#持续集成和Travis-CI" class="headerlink" title="持续集成和Travis CI"></a>持续集成和Travis CI</h2><p><strong>核心：代码集成到主干之前，必须通过自动化测试，只要有一个测试用例失败，就无法集成。</strong></p>
+<p>有点：</p>
+<ul>
+<li>快速发现错误；</li>
+<li>防止分支大幅偏离主干；</li>
+</ul>
+<p>最流行的CI系统：Travis CI</p>
+<hr>
+<h2 id="npm构建包发布"><a href="#npm构建包发布" class="headerlink" title="npm构建包发布"></a>npm构建包发布</h2><p>登录npm<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm login</span><br></pre></td></tr></table></figure></p>
+<p>升级版本：（运行npm version会自动打tag）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 升级大版本</span><br><span class="line">npm version major</span><br><span class="line">// 升级小版本</span><br><span class="line">npm version minor</span><br><span class="line">// 升级补丁版本</span><br><span class="line">npm version patch</span><br></pre></td></tr></table></figure></p>
+<p>发布包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm publish</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="git-commit规范-和-changelog生成"><a href="#git-commit规范-和-changelog生成" class="headerlink" title="git commit规范 和 changelog生成"></a>git commit规范 和 changelog生成</h2><p><strong>良好的git commit规范优势：</strong></p>
+<ul>
+<li>加快code review流程；</li>
+<li>根据git commit元数据生成changelog；</li>
+<li>便于后续维护者了解feature被修改的原因；</li>
+</ul>
+<h3 id="git提交格式"><a href="#git提交格式" class="headerlink" title="git提交格式"></a>git提交格式</h3><p><img width="1000px" height="auto" style="float: left;" src="/2020/03/24/play-with-webpack4/gitcommit.png"></p>
+<div style="clear: both"></div>
+
+<p><strong>格式要求：</strong></p>
+<p><img width="400px" height="auto" style="float: left;" src="/2020/03/24/play-with-webpack4/commit-format.png"></p>
+<div style="clear: both"></div>
+
+<p><strong>type：代表某次提交的类型</strong></p>
+<ul>
+<li>feat：新增feature；</li>
+<li>fix：修复bug；</li>
+<li>docs：仅修改文档；</li>
+<li>style：仅修改空格、缩进等不改变代码逻辑；</li>
+<li>refactor：代码重构，没有新增功能或修复bug；</li>
+<li>perf：优化相关，性能或体验；</li>
+<li>test：测试用例；</li>
+<li>chore：改变构建流程，或增加依赖库、工具等；</li>
+<li>revert：回滚到上一版本。</li>
+</ul>
+<p><strong>scope：作用域，修改范围；</strong><br><strong>subject：概述提交目的；</strong><br><strong>body：修改很大时，分行说明；</strong><br><strong>footer：附上bug链接等；</strong></p>
+<h3 id="本地开发阶段增加precommit钩子"><a href="#本地开发阶段增加precommit钩子" class="headerlink" title="本地开发阶段增加precommit钩子"></a>本地开发阶段增加precommit钩子</h3><p>安装husky、validate-commit-msg、conventional-changelog-cli<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D husky validate-commit-msg conventional-changelog-cli</span><br></pre></td></tr></table></figure></p>
+<p>校验配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// package.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;commitmsg&quot;: &quot;validate-commit-msg&quot;,</span><br><span class="line">    &quot;changelog&quot;: &quot;conventional-changelog -p angular -i CHANGELOG.md -s -r 0&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>发布版本前，使用npm run changelog生成CHANGELOG.md文件</p>
+<hr>
+<h2 id="语义化版本号"><a href="#语义化版本号" class="headerlink" title="语义化版本号"></a>语义化版本号</h2><p><strong>遵守semver规范，优势：</strong></p>
+<ul>
+<li>避免出现循环依赖；</li>
+<li>依赖冲突减少；</li>
+</ul>
+<h3 id="版本号格式"><a href="#版本号格式" class="headerlink" title="版本号格式"></a>版本号格式</h3><ul>
+<li>主版本号：做了不兼容的API修改；</li>
+<li>次版本号：做了向下兼容的功能新增；</li>
+<li>修订号：做了向下兼容的问题修正；</li>
+</ul>
+<h3 id="先行版本号"><a href="#先行版本号" class="headerlink" title="先行版本号"></a>先行版本号</h3><ul>
+<li>alpha：内部测试版，不向外发布，有很多Bug，一般用于测试人员使用；</li>
+<li>beta：测试版，会一直加入新功能，在alpha之后推出；</li>
+<li>rc：（release candidate）发行候选版本，不会再加入新功能，主要用于除错；</li>
+</ul>
 
       
     </div>
@@ -468,6 +528,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/28/play-with-webpack5/" rel="prev" title="玩转 webpack (五)">
+                玩转 webpack (五) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -546,7 +610,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -617,7 +681,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建配置抽离成npm包"><span class="nav-number">1.</span> <span class="nav-text">构建配置抽离成npm包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建配置管理的可选方案"><span class="nav-number">1.1.</span> <span class="nav-text">构建配置管理的可选方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建配置包设计"><span class="nav-number">1.2.</span> <span class="nav-text">构建配置包设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合配置"><span class="nav-number">1.3.</span> <span class="nav-text">组合配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能模块设计"><span class="nav-number">1.4.</span> <span class="nav-text">功能模块设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">1.5.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用eslint规范构建脚本"><span class="nav-number">1.6.</span> <span class="nav-text">使用eslint规范构建脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冒烟测试的运用"><span class="nav-number">2.</span> <span class="nav-text">冒烟测试的运用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检查构建是否成功："><span class="nav-number">2.1.</span> <span class="nav-text">检查构建是否成功：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查基本功能是否正常：（使用mocha测试框架）"><span class="nav-number">2.2.</span> <span class="nav-text">检查基本功能是否正常：（使用mocha测试框架）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单元测试与测试覆盖率"><span class="nav-number">3.</span> <span class="nav-text">单元测试与测试覆盖率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试工具分类："><span class="nav-number">3.1.</span> <span class="nav-text">测试工具分类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写单元测试用例："><span class="nav-number">3.2.</span> <span class="nav-text">编写单元测试用例：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试接入："><span class="nav-number">3.3.</span> <span class="nav-text">单元测试接入：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试覆盖率"><span class="nav-number">3.4.</span> <span class="nav-text">测试覆盖率</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建配置抽离成npm包"><span class="nav-number">1.</span> <span class="nav-text">构建配置抽离成npm包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建配置管理的可选方案"><span class="nav-number">1.1.</span> <span class="nav-text">构建配置管理的可选方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建配置包设计"><span class="nav-number">1.2.</span> <span class="nav-text">构建配置包设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合配置"><span class="nav-number">1.3.</span> <span class="nav-text">组合配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能模块设计"><span class="nav-number">1.4.</span> <span class="nav-text">功能模块设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">1.5.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用eslint规范构建脚本"><span class="nav-number">1.6.</span> <span class="nav-text">使用eslint规范构建脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冒烟测试的运用"><span class="nav-number">2.</span> <span class="nav-text">冒烟测试的运用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检查构建是否成功："><span class="nav-number">2.1.</span> <span class="nav-text">检查构建是否成功：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查基本功能是否正常：（使用mocha测试框架）"><span class="nav-number">2.2.</span> <span class="nav-text">检查基本功能是否正常：（使用mocha测试框架）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单元测试与测试覆盖率"><span class="nav-number">3.</span> <span class="nav-text">单元测试与测试覆盖率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试工具分类："><span class="nav-number">3.1.</span> <span class="nav-text">测试工具分类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写单元测试用例："><span class="nav-number">3.2.</span> <span class="nav-text">编写单元测试用例：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试接入："><span class="nav-number">3.3.</span> <span class="nav-text">单元测试接入：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试覆盖率"><span class="nav-number">3.4.</span> <span class="nav-text">测试覆盖率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持续集成和Travis-CI"><span class="nav-number">4.</span> <span class="nav-text">持续集成和Travis CI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#npm构建包发布"><span class="nav-number">5.</span> <span class="nav-text">npm构建包发布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-commit规范-和-changelog生成"><span class="nav-number">6.</span> <span class="nav-text">git commit规范 和 changelog生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git提交格式"><span class="nav-number">6.1.</span> <span class="nav-text">git提交格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地开发阶段增加precommit钩子"><span class="nav-number">6.2.</span> <span class="nav-text">本地开发阶段增加precommit钩子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语义化版本号"><span class="nav-number">7.</span> <span class="nav-text">语义化版本号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#版本号格式"><span class="nav-number">7.1.</span> <span class="nav-text">版本号格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#先行版本号"><span class="nav-number">7.2.</span> <span class="nav-text">先行版本号</span></a></li></ol></li></ol></div>
             
 
           </div>

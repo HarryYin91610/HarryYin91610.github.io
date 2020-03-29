@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="review,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="webpack构建性能初级分析使用webpack内置stats获取构建统计信息 使用方式一：package.json配置123456// 会输出stats.json文件&amp;#123;  &amp;quot;scripts&amp;quot;: &amp;#123;    &amp;quot;build:stats&amp;quot;: &amp;quot;webpack --env production --json &amp;gt; stats.jso">
+<meta name="keywords" content="review">
+<meta property="og:type" content="article">
+<meta property="og:title" content="玩转 webpack (五)">
+<meta property="og:url" content="http://yoursite.com/2020/03/28/play-with-webpack5/index.html">
+<meta property="og:site_name" content="HarryYin">
+<meta property="og:description" content="webpack构建性能初级分析使用webpack内置stats获取构建统计信息 使用方式一：package.json配置123456// 会输出stats.json文件&amp;#123;  &amp;quot;scripts&amp;quot;: &amp;#123;    &amp;quot;build:stats&amp;quot;: &amp;quot;webpack --env production --json &amp;gt; stats.jso">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/03/28/play-with-webpack5/happy-pack.png">
+<meta property="og:updated_time" content="2020-03-29T07:39:00.341Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="玩转 webpack (五)">
+<meta name="twitter:description" content="webpack构建性能初级分析使用webpack内置stats获取构建统计信息 使用方式一：package.json配置123456// 会输出stats.json文件&amp;#123;  &amp;quot;scripts&amp;quot;: &amp;#123;    &amp;quot;build:stats&amp;quot;: &amp;quot;webpack --env production --json &amp;gt; stats.jso">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/28/play-with-webpack5/happy-pack.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":10,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/28/play-with-webpack5/">
+
+
+
+
+
+  <title>玩转 webpack (五) | HarryYin</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HarryYin</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Just a dreamer...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/28/play-with-webpack5/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HarryYin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pikachu-detective.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HarryYin">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">玩转 webpack (五)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-28T18:12:24+08:00">
+                2020-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Webpack/" itemprop="url" rel="index">
+                    <span itemprop="name">Webpack</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="webpack构建性能初级分析"><a href="#webpack构建性能初级分析" class="headerlink" title="webpack构建性能初级分析"></a>webpack构建性能初级分析</h2><p><strong>使用webpack内置stats获取构建统计信息</strong></p>
+<h3 id="使用方式一：package-json配置"><a href="#使用方式一：package-json配置" class="headerlink" title="使用方式一：package.json配置"></a>使用方式一：package.json配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 会输出stats.json文件</span><br><span class="line">&#123;</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;build:stats&quot;: &quot;webpack --env production --json &gt; stats.json&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="使用方式二：node-js中使用"><a href="#使用方式二：node-js中使用" class="headerlink" title="使用方式二：node.js中使用"></a>使用方式二：node.js中使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const webpack = require(&apos;webpack&apos;);</span><br><span class="line">const config = require(&apos;./webpack.config.js&apos;);</span><br><span class="line"></span><br><span class="line">webpack(config, (err, stats) =&gt; &#123;</span><br><span class="line">  if (err) &#123;</span><br><span class="line">    return console.error(err);</span><br><span class="line">  &#125;</span><br><span class="line">  if (stats.hasErrors()) &#123;</span><br><span class="line">    return console.error(stats.toString(&apos;errors-only&apos;));</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(stats);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="webpack构建速度分析"><a href="#webpack构建速度分析" class="headerlink" title="webpack构建速度分析"></a>webpack构建速度分析</h2><p><strong>使用speed-measure-webpack-plugin，可以看到每个loader和插件执行耗时</strong></p>
+<p>安装插件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D speed-measure-webpack-plugin</span><br></pre></td></tr></table></figure></p>
+<p>使用方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const SpeedMeasurePlugin = require(&apos;speed-measure-webpack-plugin&apos;);</span><br><span class="line"></span><br><span class="line">const smp = new SpeedMeasurePlugin();</span><br><span class="line"></span><br><span class="line">const webpackConfig = smp.wrap(&#123;</span><br><span class="line">  plugins: [</span><br><span class="line">    new MyPlugin(),</span><br><span class="line">    new MyOtherPlugin()</span><br><span class="line">  ]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="webpack构建体积分析"><a href="#webpack构建体积分析" class="headerlink" title="webpack构建体积分析"></a>webpack构建体积分析</h2><p><strong>使用webpack-bundle-analyzer，构建完成后会在8888端口展示大小</strong></p>
+<p>安装插件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D webpack-bundle-analyzer</span><br></pre></td></tr></table></figure></p>
+<p>使用方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const BundleAnalyzerPlugin = require(&apos;webpack-bundle-analyzer&apos;).BundleAnalyzerPlugin;</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">  plugins: [</span><br><span class="line">    new BundleAnalyzerPlugin()</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>利用此工具可以用来分析：</p>
+<ul>
+<li>第三方依赖模块文件大小；</li>
+<li>业务组件代码大小；</li>
+</ul>
+<hr>
+<h2 id="构建速度优化"><a href="#构建速度优化" class="headerlink" title="构建速度优化"></a>构建速度优化</h2><h3 id="使用高版本的webpack和node-js"><a href="#使用高版本的webpack和node-js" class="headerlink" title="使用高版本的webpack和node.js"></a>使用高版本的webpack和node.js</h3><p><strong>webpack4性能提升的原因</strong></p>
+<ul>
+<li>V8引擎：for of 代替 forEach、Map 和 Set 代替 Object、includes 代替 indexOf；</li>
+<li>默认使用更快的md4 hash算法代替md5；</li>
+<li>webpack AST可以直接从loader传递给AST，减少解析时间；</li>
+<li>使用字符串代替正则表达式；</li>
+</ul>
+<h3 id="多进程、多实例构建"><a href="#多进程、多实例构建" class="headerlink" title="多进程、多实例构建"></a>多进程、多实例构建</h3><p>可选方案：</p>
+<ul>
+<li>happy-pack </li>
+<li>thread-loader</li>
+<li>parallel-webpack</li>
+</ul>
+<h4 id="使用happy-pack解析资源（webpack4以前的做法）"><a href="#使用happy-pack解析资源（webpack4以前的做法）" class="headerlink" title="使用happy-pack解析资源（webpack4以前的做法）"></a>使用happy-pack解析资源（webpack4以前的做法）</h4><p><strong>原理：每次webpack解析一个模块，HappyPack会将该模块及其依赖分配给worker线程。</strong></p>
+<p>处理流程：</p>
+<p><img width="1000px" height="auto" style="float: left;" src="/2020/03/28/play-with-webpack5/happy-pack.png"></p>
+<div style="clear: both"></div>
+
+<p>使用方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">exports.plugins = [</span><br><span class="line">  new HappyPack(&#123;</span><br><span class="line">    id: &apos;jsx&apos;,</span><br><span class="line">    thread: 4,</span><br><span class="line">    loaders: [&apos;babel-loader&apos;]</span><br><span class="line">  &#125;),</span><br><span class="line">  new HappyPack(&#123;</span><br><span class="line">    id: &apos;styles&apos;,</span><br><span class="line">    thread: 2,</span><br><span class="line">    loaders: [&apos;style-loader&apos;, &apos;css-loader&apos;, &apos;less-loader&apos;]</span><br><span class="line">  &#125;)</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用thread-loader解析资源"><a href="#使用thread-loader解析资源" class="headerlink" title="使用thread-loader解析资源"></a>使用thread-loader解析资源</h4><p><strong>原理：每次webpack解析一个模块时，thread-loader会将该模块及其依赖分配给worker线程中。</strong></p>
+<p>安装thread-loader<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D thread-loader</span><br></pre></td></tr></table></figure></p>
+<p>使用方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  module: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: /\.js$/,</span><br><span class="line">        use: [</span><br><span class="line">          &#123;</span><br><span class="line">            loader: &apos;thread-loader&apos;,</span><br><span class="line">            options: &#123;</span><br><span class="line">              workers: 3</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          &apos;babel-loader&apos;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="多进程、多实例并行压缩代码"><a href="#多进程、多实例并行压缩代码" class="headerlink" title="多进程、多实例并行压缩代码"></a>多进程、多实例并行压缩代码</h3><h4 id="方法一：使用parallel-uglify-plugin"><a href="#方法一：使用parallel-uglify-plugin" class="headerlink" title="方法一：使用parallel-uglify-plugin"></a>方法一：使用parallel-uglify-plugin</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">const ParallelUglifyPlugin = require(&apos;parallel-uglify-plugin&apos;)</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">  plugins: [</span><br><span class="line">    new ParallelUglifyPlugin(&#123;</span><br><span class="line">      uglifyJS: &#123;</span><br><span class="line">        output: &#123;</span><br><span class="line">          beautify: false,</span><br><span class="line">          comments: false</span><br><span class="line">        &#125;,</span><br><span class="line">        compress: &#123;</span><br><span class="line">          warnings: false,</span><br><span class="line">          drop_console: true,</span><br><span class="line">          collapse_vars: true,</span><br><span class="line">          reduce_vars: true</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="方法二：使用uglifyjs-webpack-plugin开启parallel"><a href="#方法二：使用uglifyjs-webpack-plugin开启parallel" class="headerlink" title="方法二：使用uglifyjs-webpack-plugin开启parallel"></a>方法二：使用uglifyjs-webpack-plugin开启parallel</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">const UglifyJSPlugin = require(&apos;uglifyjs-webpack-plugin&apos;)</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">  plugins: [</span><br><span class="line">    new UglifyJSPlugin(&#123;</span><br><span class="line">      uglifyOptions: &#123;</span><br><span class="line">        warning: false,</span><br><span class="line">        mangle: true,</span><br><span class="line">        toplevel: false,</span><br><span class="line">        ie8: false, </span><br><span class="line">        keep_fnames: false</span><br><span class="line">      &#125;,</span><br><span class="line">      parallel: true</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="方法三：使用terser-webpack-plugin开启parallel"><a href="#方法三：使用terser-webpack-plugin开启parallel" class="headerlink" title="方法三：使用terser-webpack-plugin开启parallel"></a>方法三：使用terser-webpack-plugin开启parallel</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const TerserPlugin = require(&apos;terser-webpack-plugin&apos;);</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">  optimization: &#123;</span><br><span class="line">    minimizer: [</span><br><span class="line">      new TerserPlugin(&#123;</span><br><span class="line">        parallel: true</span><br><span class="line">      &#125;)</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="进一步分包：预编译资源模块"><a href="#进一步分包：预编译资源模块" class="headerlink" title="进一步分包：预编译资源模块"></a>进一步分包：预编译资源模块</h3><p>思路：将react、react-dom基础包打包成一个文件。<br>方法：使用dll-plugin进行分包，生成分离后包的描述文件manifest.json，webpack可以通过DllReferencePlugin对manifest.json引用自动关联分离的包，每次构建无需处理基础包内容。</p>
+<p>用于分包的webpack.dll.js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  entry: &#123;</span><br><span class="line">    library: [</span><br><span class="line">      &apos;react&apos;,</span><br><span class="line">      &apos;react-dom&apos;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: &apos;[name].dll.js&apos;,</span><br><span class="line">    path: path.join(__dirname, &apos;build/library&apos;),</span><br><span class="line">    library: &apos;[name]&apos; // 暴露出来的库名</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    new webpack.DllPlugin(&#123;</span><br><span class="line">      name: &apos;[name]&apos;,</span><br><span class="line">      path: path.join(__dirname, &apos;build/library/[name].json&apos;),</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>新增分包的命令脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;dll&quot;: &quot;webpack --config webpack.dll.js&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>构建配置：webpack.prod.js<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  plugins: [</span><br><span class="line">    new webpack.DllReferencePlugin(&#123;</span><br><span class="line">      manifest: require(&apos;./build/library/library.json&apos;)</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="利用缓存提升二次构建速度"><a href="#利用缓存提升二次构建速度" class="headerlink" title="利用缓存提升二次构建速度"></a>利用缓存提升二次构建速度</h3><p><strong>缓存思路：</strong></p>
+<ul>
+<li>babel-loader开启缓存；</li>
+<li>terser-webpack-plugin开启缓存；</li>
+<li>使用cache-loader或者hard-source-webpack-plugin；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const TerserPlugin = require(&apos;terser-webpack-plugin&apos;);</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">  optimization: &#123;</span><br><span class="line">    minimizer: [</span><br><span class="line">      new TerserPlugin(&#123;</span><br><span class="line">        parallel: true,</span><br><span class="line">        cache: true</span><br><span class="line">      &#125;)</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="缩小构建目标"><a href="#缩小构建目标" class="headerlink" title="缩小构建目标"></a>缩小构建目标</h3><p>目的：尽可能少构建模块（例如：babel-loader不解析node_modules）</p>
+<p><strong>减少文件搜索范围</strong></p>
+<ul>
+<li>优化resolve.modules配置（减少模块搜索层级）；</li>
+<li>优化resolve.mainFields配置；</li>
+<li>优化resolve.extensions配置；</li>
+<li>合理使用alias</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  resolve: &#123;</span><br><span class="line">    alias: &#123;</span><br><span class="line">      react: path.resolve(__dirname, &apos;./node_modules/react/dist/react.min.js&apos;)</span><br><span class="line">    &#125;,</span><br><span class="line">    modules: [path.resolve(__dirname, &apos;node_modules&apos;)],</span><br><span class="line">    extensions: [&apos;.js&apos;], // js模块可以省略后缀</span><br><span class="line">    mainFields: [&apos;main&apos;] // 查找入口文件，直接读取package.json指定的main字段</span><br><span class="line">  &#125;,</span><br><span class="line">  module: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: /\.js$/,</span><br><span class="line">        include: path.resolve(&apos;src&apos;) // 只解析src下的js</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="构建体积优化"><a href="#构建体积优化" class="headerlink" title="构建体积优化"></a>构建体积优化</h2><h3 id="利用tree-shaking删除无用的js、css"><a href="#利用tree-shaking删除无用的js、css" class="headerlink" title="利用tree shaking删除无用的js、css"></a>利用tree shaking删除无用的js、css</h3><h4 id="删除无用的css"><a href="#删除无用的css" class="headerlink" title="删除无用的css"></a>删除无用的css</h4><p><strong>方法一：使用purgecss-webpack-plugin</strong><br>和mini-css-extract-plugin配合使用，识别已经用到的css class,</p>
+<p>安装插件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D purgecss-webpack-plugin</span><br></pre></td></tr></table></figure></p>
+<p>使用方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const PurgecssPlugin = require(&apos;purgecss-webpack-plugin&apos;);</span><br><span class="line"></span><br><span class="line">const PATHS = &#123;</span><br><span class="line">  src: path.join(__dirname, &apos;src&apos;)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">  plugins: [</span><br><span class="line">    new PurgecssPlugin(&#123;</span><br><span class="line">      paths: glob.sync(`$&#123;PATHS.src&#125;/**/*`,  &#123; nodir: true &#125;),</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>方法二：使用uncss</strong></p>
+<p>html通过jsdom加载，所有样式通过postcss解析，通过document.querySelector来识别不存在的css选择器。</p>
+<h3 id="利用webpack进行图片压缩"><a href="#利用webpack进行图片压缩" class="headerlink" title="利用webpack进行图片压缩"></a>利用webpack进行图片压缩</h3><p>使用image-webpack-loader（基于node的 imagemin）</p>
+<ul>
+<li>有很多定制选择；</li>
+<li>支持多种图片格式；</li>
+<li>可以引入第三方优化插件；</li>
+</ul>
+<h3 id="使用动态polyfill服务"><a href="#使用动态polyfill服务" class="headerlink" title="使用动态polyfill服务"></a>使用动态polyfill服务</h3><p>背景：babel-polyfill打包后体积占比很大。</p>
+<p>解决方案：利用polyfill-service：根据不同浏览器UA（user-agent）返回不同的polyfill。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/review/" rel="tag"># review</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/24/play-with-webpack4/" rel="next" title="玩转 webpack (四)">
+                <i class="fa fa-chevron-left"></i> 玩转 webpack (四)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/29/play-with-webpack6/" rel="prev" title="玩转 webpack (六)">
+                玩转 webpack (六) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/pikachu-detective.jpg" alt="HarryYin">
+            
+              <p class="site-author-name" itemprop="name">HarryYin</p>
+              <p class="site-description motion-element" itemprop="description">自由だ</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/HarryYin91610" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://agileui.harryyin.cn" target="_blank" title="AgileUI">
+                      
+                        <i class="fa fa-fw fa-globe"></i>AgileUI</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack构建性能初级分析"><span class="nav-number">1.</span> <span class="nav-text">webpack构建性能初级分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方式一：package-json配置"><span class="nav-number">1.1.</span> <span class="nav-text">使用方式一：package.json配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方式二：node-js中使用"><span class="nav-number">1.2.</span> <span class="nav-text">使用方式二：node.js中使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack构建速度分析"><span class="nav-number">2.</span> <span class="nav-text">webpack构建速度分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack构建体积分析"><span class="nav-number">3.</span> <span class="nav-text">webpack构建体积分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建速度优化"><span class="nav-number">4.</span> <span class="nav-text">构建速度优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用高版本的webpack和node-js"><span class="nav-number">4.1.</span> <span class="nav-text">使用高版本的webpack和node.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多进程、多实例构建"><span class="nav-number">4.2.</span> <span class="nav-text">多进程、多实例构建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用happy-pack解析资源（webpack4以前的做法）"><span class="nav-number">4.2.1.</span> <span class="nav-text">使用happy-pack解析资源（webpack4以前的做法）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用thread-loader解析资源"><span class="nav-number">4.2.2.</span> <span class="nav-text">使用thread-loader解析资源</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多进程、多实例并行压缩代码"><span class="nav-number">4.3.</span> <span class="nav-text">多进程、多实例并行压缩代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一：使用parallel-uglify-plugin"><span class="nav-number">4.3.1.</span> <span class="nav-text">方法一：使用parallel-uglify-plugin</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二：使用uglifyjs-webpack-plugin开启parallel"><span class="nav-number">4.3.2.</span> <span class="nav-text">方法二：使用uglifyjs-webpack-plugin开启parallel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法三：使用terser-webpack-plugin开启parallel"><span class="nav-number">4.3.3.</span> <span class="nav-text">方法三：使用terser-webpack-plugin开启parallel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进一步分包：预编译资源模块"><span class="nav-number">4.4.</span> <span class="nav-text">进一步分包：预编译资源模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用缓存提升二次构建速度"><span class="nav-number">4.5.</span> <span class="nav-text">利用缓存提升二次构建速度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缩小构建目标"><span class="nav-number">4.6.</span> <span class="nav-text">缩小构建目标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建体积优化"><span class="nav-number">5.</span> <span class="nav-text">构建体积优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用tree-shaking删除无用的js、css"><span class="nav-number">5.1.</span> <span class="nav-text">利用tree shaking删除无用的js、css</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除无用的css"><span class="nav-number">5.1.1.</span> <span class="nav-text">删除无用的css</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用webpack进行图片压缩"><span class="nav-number">5.2.</span> <span class="nav-text">利用webpack进行图片压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用动态polyfill服务"><span class="nav-number">5.3.</span> <span class="nav-text">使用动态polyfill服务</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HarryYin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
