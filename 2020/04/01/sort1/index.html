@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="排序的分类   如何分析一个排序算法排序算法的执行效率 最好、最坏、平均情况时间复杂度； 时间复杂度的系数、常数、低阶； 比较次数和交换（移动）次数；  排序算法内存消耗算法的内存消耗可以通过空间复杂度来衡量，排序算法也不例外。不过，针对排序算法的空间复杂度，我们还引入了一个新的概念，原地排序（Sorted in place）。原地排序算法，就是特指空间复杂度是 O(1) 的排序算法。我们今天讲的">
+<meta name="description" content="排序的分类">
 <meta name="keywords" content="sort">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为什么插入排序比冒泡排序更受欢迎？">
 <meta property="og:url" content="http://yoursite.com/2020/04/01/sort1/index.html">
 <meta property="og:site_name" content="HarryYin">
-<meta property="og:description" content="排序的分类   如何分析一个排序算法排序算法的执行效率 最好、最坏、平均情况时间复杂度； 时间复杂度的系数、常数、低阶； 比较次数和交换（移动）次数；  排序算法内存消耗算法的内存消耗可以通过空间复杂度来衡量，排序算法也不例外。不过，针对排序算法的空间复杂度，我们还引入了一个新的概念，原地排序（Sorted in place）。原地排序算法，就是特指空间复杂度是 O(1) 的排序算法。我们今天讲的">
+<meta property="og:description" content="排序的分类">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/04/01/sort1/sort1.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/04/01/sort1/sort1-2.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/04/01/sort1/sort1-3.jpg">
-<meta property="og:updated_time" content="2020-04-01T12:36:10.340Z">
+<meta property="og:updated_time" content="2020-04-02T08:51:55.299Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为什么插入排序比冒泡排序更受欢迎？">
-<meta name="twitter:description" content="排序的分类   如何分析一个排序算法排序算法的执行效率 最好、最坏、平均情况时间复杂度； 时间复杂度的系数、常数、低阶； 比较次数和交换（移动）次数；  排序算法内存消耗算法的内存消耗可以通过空间复杂度来衡量，排序算法也不例外。不过，针对排序算法的空间复杂度，我们还引入了一个新的概念，原地排序（Sorted in place）。原地排序算法，就是特指空间复杂度是 O(1) 的排序算法。我们今天讲的">
+<meta name="twitter:description" content="排序的分类">
 <meta name="twitter:image" content="http://yoursite.com/2020/04/01/sort1/sort1.jpg">
 
 
@@ -349,6 +349,8 @@
         <h3 id="排序的分类"><a href="#排序的分类" class="headerlink" title="排序的分类"></a>排序的分类</h3><p><img width="500px" height="auto" style="float: left;" src="/2020/04/01/sort1/sort1.jpg"></p>
 <div style="clear: both"></div>
 
+<a id="more"></a>
+<hr>
 <h3 id="如何分析一个排序算法"><a href="#如何分析一个排序算法" class="headerlink" title="如何分析一个排序算法"></a>如何分析一个排序算法</h3><h4 id="排序算法的执行效率"><a href="#排序算法的执行效率" class="headerlink" title="排序算法的执行效率"></a>排序算法的执行效率</h4><ul>
 <li>最好、最坏、平均情况时间复杂度；</li>
 <li>时间复杂度的系数、常数、低阶；</li>
@@ -356,6 +358,7 @@
 </ul>
 <h4 id="排序算法内存消耗"><a href="#排序算法内存消耗" class="headerlink" title="排序算法内存消耗"></a>排序算法内存消耗</h4><p>算法的内存消耗可以通过空间复杂度来衡量，排序算法也不例外。不过，针对排序算法的空间复杂度，我们还引入了一个新的概念，原地排序（Sorted in place）。原地排序算法，就是特指空间复杂度是 O(1) 的排序算法。我们今天讲的三种排序算法，都是原地排序算法。</p>
 <h4 id="排序算法稳定性"><a href="#排序算法稳定性" class="headerlink" title="排序算法稳定性"></a>排序算法稳定性</h4><p>针对排序算法，我们还有一个重要的度量指标，稳定性。这个概念是说，如果待排序的序列中存在值相等的元素，经过排序之后，相等元素之间原有的先后顺序不变，如果这两个相等元素前后顺序没有改变，那我们就把这种排序算法叫作稳定的排序算法，如果前后顺序发生变化，那对应的排序算法就叫作不稳定的排序算法。</p>
+<hr>
 <h3 id="冒泡排序（Bubble-Sort）"><a href="#冒泡排序（Bubble-Sort）" class="headerlink" title="冒泡排序（Bubble Sort）"></a>冒泡排序（Bubble Sort）</h3><p><strong>原理：冒泡排序只会操作相邻的两个数据。每次冒泡操作都会对相邻的两个元素进行比较，看是否满足大小关系要求。如果不满足就让它俩互换。一次冒泡会让至少一个元素移动到它应该在的位置，重复 n 次，就完成了 n 个数据的排序工作。</strong></p>
 <h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><p>我用一个例子，带你看下冒泡排序的整个过程。我们要对一组数据 4，5，6，3，2，1，从小到大进行排序。</p>
 <ul>
@@ -388,9 +391,9 @@
 </li>
 <li>冒泡排序包含两个操作原子，比较和交换。每交换一次，有序度就加 1。不管算法怎么改进，交换次数总是确定的，即为逆序度，也就是n*(n-1)/2–初始有序度。此例中就是 15–3=12，要进行 12 次交换操作。</li>
 <li>对于包含 n 个数据的数组进行冒泡排序，平均交换次数是多少呢？最坏情况下，初始状态的有序度是 0，所以要进行 n<em>(n-1)/2 次交换。最好情况下，初始状态的有序度是 n</em>(n-1)/2，就不需要进行交换。我们可以取个中间值 n*(n-1)/4，来表示初始有序度既不是很高也不是很低的平均情况。</li>
-<li>换句话说，平均情况下，需要 n*(n-1)/4 次交换操作，比较操作肯定要比交换操作多，而复杂度的上限是 O(n2)，所以平均情况下的时间复杂度就是 O(n2)。<a id="more"></a>
-</li>
+<li>换句话说，平均情况下，需要 n*(n-1)/4 次交换操作，比较操作肯定要比交换操作多，而复杂度的上限是 O(n2)，所以平均情况下的时间复杂度就是 O(n2)。</li>
 </ul>
+<hr>
 <h3 id="插入排序（Insertion-Sort）"><a href="#插入排序（Insertion-Sort）" class="headerlink" title="插入排序（Insertion Sort）"></a>插入排序（Insertion Sort）</h3><p><strong>原理：我们将数组中的数据分为两个区间，已排序区间和未排序区间。初始已排序区间只有一个元素，就是数组的第一个元素。插入算法的核心思想是取未排序区间中的元素，在已排序区间中找到合适的插入位置将其插入，并保证已排序区间数据一直有序。重复这个过程，直到未排序区间中元素为空，算法结束。</strong></p>
 <p>插入排序也包含两种操作，一种是元素的比较，一种是元素的移动。当我们需要将一个数据 a 插入到已排序区间时，需要拿 a 与已排序区间的元素依次比较大小，找到合适的插入位置。找到插入点之后，我们还需要将插入点之后的元素顺序往后移动一位，这样才能腾出位置给元素 a 插入。</p>
 <h4 id="代码实现：-1"><a href="#代码实现：-1" class="headerlink" title="代码实现："></a>代码实现：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 插入排序，a表示数组，n表示数组大小</span><br><span class="line">public void insertionSort(int[] a, int n) &#123;</span><br><span class="line">  if (n &lt;= 1) return;</span><br><span class="line"></span><br><span class="line">  for (int i = 1; i &lt; n; ++i) &#123;</span><br><span class="line">    int value = a[i];</span><br><span class="line">    int j = i - 1;</span><br><span class="line">    // 查找插入的位置</span><br><span class="line">    for (; j &gt;= 0; --j) &#123;</span><br><span class="line">      if (a[j] &gt; value) &#123;</span><br><span class="line">        a[j+1] = a[j];  // 数据移动</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    a[j+1] = value; // 插入数据</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -401,12 +404,14 @@
 <li>如果数组是倒序的，每次插入都相当于在数组的第一个位置插入新的数据，所以需要移动大量的数据，所以最坏情况时间复杂度为 O(n2)。</li>
 <li>如果数组是倒序的，每次插入都相当于在数组的第一个位置插入新的数据，所以需要移动大量的数据，所以最坏情况时间复杂度为 O(n2)。还记得我们在数组中插入一个数据的平均时间复杂度是多少吗？没错，是 O(n)。所以，对于插入排序来说，每次插入操作都相当于在数组中插入一个数据，循环执行 n 次插入操作，所以平均时间复杂度为 O(n2)。还记得我们在数组中插入一个数据的平均时间复杂度是多少吗？没错，是 O(n)。所以，对于插入排序来说，每次插入操作都相当于在数组中插入一个数据，循环执行 n 次插入操作，所以平均时间复杂度为 O(n2)。</li>
 </ul>
+<hr>
 <h3 id="选择排序（Selection-Sort）"><a href="#选择排序（Selection-Sort）" class="headerlink" title="选择排序（Selection Sort）"></a>选择排序（Selection Sort）</h3><p><strong>原理：选择排序算法的实现思路有点类似插入排序，也分已排序区间和未排序区间。但是选择排序每次会从未排序区间中找到最小的元素，将其放到已排序区间的末尾。</strong></p>
 <h4 id="分析选择排序"><a href="#分析选择排序" class="headerlink" title="分析选择排序"></a>分析选择排序</h4><ul>
 <li>首先，选择排序空间复杂度为 O(1)，是一种原地排序算法。</li>
 <li>选择排序的最好情况时间复杂度、最坏情况和平均情况时间复杂度都为 O(n2)。</li>
 <li>选择排序是一种不稳定的排序算法，正是因此，相对于冒泡排序和插入排序，选择排序就稍微逊色了。</li>
 </ul>
+<hr>
 <h3 id="比较冒泡排序和插入排序"><a href="#比较冒泡排序和插入排序" class="headerlink" title="比较冒泡排序和插入排序"></a>比较冒泡排序和插入排序</h3><p>从代码实现上来看，冒泡排序的数据交换要比插入排序的数据移动要复杂，冒泡排序需要 3 个赋值操作，而插入排序只需要 1 个。</p>
 <p>我们把执行一个赋值语句的时间粗略地计为单位时间（unit_time），然后分别用冒泡排序和插入排序对同一个逆序度是 K 的数组进行排序。用冒泡排序，需要 K 次交换操作，每次需要 3 个赋值语句，所以交换操作总耗时就是 3*K 单位时间。而插入排序中数据移动操作只需要 K 个单位时间。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">冒泡排序中数据的交换操作：</span><br><span class="line">if (a[j] &gt; a[j+1]) &#123; // 交换</span><br><span class="line">   int tmp = a[j];</span><br><span class="line">   a[j] = a[j+1];</span><br><span class="line">   a[j+1] = tmp;</span><br><span class="line">   flag = true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">插入排序中数据的移动操作：</span><br><span class="line">if (a[j] &gt; value) &#123;</span><br><span class="line">  a[j+1] = a[j];  // 数据移动</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>虽然冒泡排序和插入排序在时间复杂度上是一样的，都是 O(n2)，但是如果我们希望把性能优化做到极致，那肯定首选插入排序。</p>
@@ -449,6 +454,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/02/sort2/" rel="prev" title="归并排序与快速排序">
+                归并排序与快速排序 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -527,7 +536,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -538,7 +547,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
