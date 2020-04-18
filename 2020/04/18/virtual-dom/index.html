@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="stack,">
+  <meta name="keywords" content="optimization,">
 
 
 
@@ -79,24 +79,21 @@
 
 
 
-<meta name="description" content="理解“栈”关于“栈”，有一个非常贴切的例子，就是一摞叠在一起的盘子。我们平时放盘子的时候，都是从下往上一个一个放；取的时候，我们也是从上往下一个一个地依次取，不能从中间任意抽出。后进者先出，先进者后出，这就是典型的“栈”结构。">
-<meta name="keywords" content="stack">
+<meta name="description" content="DOM的缺陷通过js操作修改dom结构，会触发样式计算、布局、绘制、栅格化、合成等任务，我们把这一过程称为重排。除了重排之外，还有可能引起重绘或者合成操作，形象地理解就是“牵一发而动全身”。另外，对于 DOM 的不当操作还有可能引发强制同步布局和布局抖动的问题，这些操作都会大大降低渲染效率。因此，对于 DOM 的操作我们时刻都需要非常小心谨慎。对于简单的页面来说，其 DOM 结构还是比较简单的，所">
+<meta name="keywords" content="optimization">
 <meta property="og:type" content="article">
-<meta property="og:title" content="栈">
-<meta property="og:url" content="http://yoursite.com/2019/07/30/stack/index.html">
+<meta property="og:title" content="虚拟DOM及其应用">
+<meta property="og:url" content="http://yoursite.com/2020/04/18/virtual-dom/index.html">
 <meta property="og:site_name" content="HarryYin">
-<meta property="og:description" content="理解“栈”关于“栈”，有一个非常贴切的例子，就是一摞叠在一起的盘子。我们平时放盘子的时候，都是从下往上一个一个放；取的时候，我们也是从上往下一个一个地依次取，不能从中间任意抽出。后进者先出，先进者后出，这就是典型的“栈”结构。">
+<meta property="og:description" content="DOM的缺陷通过js操作修改dom结构，会触发样式计算、布局、绘制、栅格化、合成等任务，我们把这一过程称为重排。除了重排之外，还有可能引起重绘或者合成操作，形象地理解就是“牵一发而动全身”。另外，对于 DOM 的不当操作还有可能引发强制同步布局和布局抖动的问题，这些操作都会大大降低渲染效率。因此，对于 DOM 的操作我们时刻都需要非常小心谨慎。对于简单的页面来说，其 DOM 结构还是比较简单的，所">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2019/07/30/stack/stack01.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/07/30/stack/stack02.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/07/30/stack/stack03.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/07/30/stack/stack04.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/07/30/stack/stack05.jpg">
-<meta property="og:updated_time" content="2019-08-02T05:04:16.364Z">
+<meta property="og:image" content="http://yoursite.com/2020/04/18/virtual-dom/vdom1.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/18/virtual-dom/vdom2.png">
+<meta property="og:updated_time" content="2020-04-18T09:24:23.249Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="栈">
-<meta name="twitter:description" content="理解“栈”关于“栈”，有一个非常贴切的例子，就是一摞叠在一起的盘子。我们平时放盘子的时候，都是从下往上一个一个放；取的时候，我们也是从上往下一个一个地依次取，不能从中间任意抽出。后进者先出，先进者后出，这就是典型的“栈”结构。">
-<meta name="twitter:image" content="http://yoursite.com/2019/07/30/stack/stack01.jpg">
+<meta name="twitter:title" content="虚拟DOM及其应用">
+<meta name="twitter:description" content="DOM的缺陷通过js操作修改dom结构，会触发样式计算、布局、绘制、栅格化、合成等任务，我们把这一过程称为重排。除了重排之外，还有可能引起重绘或者合成操作，形象地理解就是“牵一发而动全身”。另外，对于 DOM 的不当操作还有可能引发强制同步布局和布局抖动的问题，这些操作都会大大降低渲染效率。因此，对于 DOM 的操作我们时刻都需要非常小心谨慎。对于简单的页面来说，其 DOM 结构还是比较简单的，所">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/18/virtual-dom/vdom1.png">
 
 
 
@@ -126,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/30/stack/">
+  <link rel="canonical" href="http://yoursite.com/2020/04/18/virtual-dom/">
 
 
 
 
 
-  <title>栈 | HarryYin</title>
+  <title>虚拟DOM及其应用 | HarryYin</title>
   
 
 
@@ -259,7 +256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/30/stack/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/18/virtual-dom/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="HarryYin">
@@ -276,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">栈</h1>
+          <h1 class="post-title" itemprop="name headline">虚拟DOM及其应用</h1>
         
 
         <div class="post-meta">
@@ -288,8 +285,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-30T23:46:30+08:00">
-                2019-07-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-18T17:10:55+08:00">
+                2020-04-18
               </time>
             
 
@@ -311,8 +308,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Data-Structure/" itemprop="url" rel="index">
-                    <span itemprop="name">Data Structure</span>
+                  <a href="/categories/Performance/" itemprop="url" rel="index">
+                    <span itemprop="name">Performance</span>
                   </a>
                 </span>
 
@@ -348,44 +345,22 @@
       
 
       
-        <h3 id="理解“栈”"><a href="#理解“栈”" class="headerlink" title="理解“栈”"></a>理解“栈”</h3><p>关于“栈”，有一个非常贴切的例子，就是一摞叠在一起的盘子。我们平时放盘子的时候，都是从下往上一个一个放；取的时候，我们也是从上往下一个一个地依次取，不能从中间任意抽出。<strong>后进者先出，先进者后出，这就是典型的“栈”结构。</strong></p>
-
+        <h3 id="DOM的缺陷"><a href="#DOM的缺陷" class="headerlink" title="DOM的缺陷"></a>DOM的缺陷</h3><p>通过js操作修改dom结构，会触发样式计算、布局、绘制、栅格化、合成等任务，我们把这一过程称为重排。除了重排之外，还有可能引起重绘或者合成操作，形象地理解就是“牵一发而动全身”。另外，对于 DOM 的不当操作还有可能引发强制同步布局和布局抖动的问题，这些操作都会大大降低渲染效率。因此，对于 DOM 的操作我们时刻都需要非常小心谨慎。<br>对于简单的页面来说，其 DOM 结构还是比较简单的，所以以上这些操作 DOM 的问题并不会对用户体验产生太多影响。但是对于一些复杂的页面或者目前使用非常多的单页应用来说，其 DOM 结构是非常复杂的，而且还需要不断地去修改 DOM 树，每次操作 DOM 渲染引擎都需要进行重排、重绘或者合成等操作，因为 DOM 结构复杂，所生成的页面结构也会很复杂，对于这些复杂的页面，执行一次重排或者重绘操作都是非常耗时的，这就给我们带来了真正的性能问题。<br>我们需要有一种方式来减少 JavaScript 对 DOM 的操作，这时候虚拟 DOM 就上场了。</p>
 <a id="more"></a>
-<p>从栈的操作特性上来看，<strong>栈是一种“操作受限”的线性表</strong>，只允许在一端插入和删除数据。</p>
+<h3 id="什么是虚拟DOM"><a href="#什么是虚拟DOM" class="headerlink" title="什么是虚拟DOM"></a>什么是虚拟DOM</h3><p>React 中虚拟 DOM 执行流程图：<br><img width="500px" height="auto" style="float: left;" src="/2020/04/18/virtual-dom/vdom1.png"></p>
+<div style="clear: both"></div>
 
-<p><strong>当某个数据集合只涉及在一端插入和删除数据，并且满足后进先出、先进后出的特性，我们就应该首选“栈”这种数据结构</strong>。</p>
+<ul>
+<li><strong>创建阶段</strong>：首先依据 JSX 和基础数据创建出来虚拟 DOM，它反映了真实的 DOM 树的结构。然后由虚拟 DOM 树创建出真实 DOM 树，真实的 DOM 树生成完后，再触发渲染流水线往屏幕输出页面；</li>
+<li><strong>更新阶段</strong>：如果数据发生了改变，那么就需要根据新的数据创建一个新的虚拟 DOM 树；然后 React 比较两个树，找出变化的地方，并把变化的地方一次性更新到真实的 DOM 树上；最后渲染引擎更新渲染流水线，并生成新的页面；</li>
+</ul>
+<h3 id="双缓存"><a href="#双缓存" class="headerlink" title="双缓存"></a>双缓存</h3><p>在开发游戏或者处理其他图像的过程中，屏幕从前缓冲区读取数据然后显示。但是很多图形操作都很复杂且需要大量的运算，比如一幅完整的画面，可能需要计算多次才能完成，如果每次计算完一部分图像，就将其写入缓冲区，那么就会造成一个后果，那就是在显示一个稍微复杂点的图像的过程中，你看到的页面效果可能是一部分一部分地显示出来，因此在刷新页面的过程中，会让用户感受到界面的闪烁。<br>而使用双缓存，可以让你先将计算的中间结果存放在另一个缓冲区中，等全部的计算结束，该缓冲区已经存储了完整的图形之后，再将该缓冲区的图形数据一次性复制到显示缓冲区，这样就使得整个图像的输出非常稳定。<br>在这里，你可以把虚拟 DOM 看成是 DOM 的一个 buffer，和图形显示一样，它会在完成一次完整的操作之后，再把结果应用到 DOM 上，这样就能减少一些不必要的更新，同时还能保证 DOM 的稳定输出。</p>
+<h3 id="MVC-模式"><a href="#MVC-模式" class="headerlink" title="MVC 模式"></a>MVC 模式</h3><p>在各大设计模式当中，MVC 是一个非常重要且应用广泛的模式，因为它能将数据和视图进行分离，在涉及到一些复杂的项目时，能够大大减轻项目的耦合度，使得程序易于维护。</p>
+<p><img width="500px" height="auto" style="float: left;" src="/2020/04/18/virtual-dom/vdom2.png"></p>
+<div style="clear: both"></div>
 
-<h3 id="实现栈"><a href="#实现栈" class="headerlink" title="实现栈"></a>实现栈</h3><p>实际上，栈既可以用数组来实现，也可以用链表来实现。用数组实现的栈，我们叫作<strong>顺序栈</strong>，用链表实现的栈，我们叫作<strong>链式栈</strong>。</p>
-
-<p>示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">// 基于数组实现的顺序栈</span><br><span class="line">public class ArrayStack &#123;</span><br><span class="line">  private String[] items;  // 数组</span><br><span class="line">  private int count;       // 栈中元素个数</span><br><span class="line">  private int n;           // 栈的大小</span><br><span class="line"></span><br><span class="line">  // 初始化数组，申请一个大小为 n 的数组空间</span><br><span class="line">  public ArrayStack(int n) &#123;</span><br><span class="line">    this.items = new String[n];</span><br><span class="line">    this.n = n;</span><br><span class="line">    this.count = 0;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 入栈操作</span><br><span class="line">  public boolean push(String item) &#123;</span><br><span class="line">    // 数组空间不够了，直接返回 false，入栈失败。</span><br><span class="line">    if (count == n) return false;</span><br><span class="line">    // 将 item 放到下标为 count 的位置，并且 count 加一</span><br><span class="line">    items[count] = item;</span><br><span class="line">    ++count;</span><br><span class="line">    return true;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  // 出栈操作</span><br><span class="line">  public String pop() &#123;</span><br><span class="line">    // 栈为空，则直接返回 null</span><br><span class="line">    if (count == 0) return null;</span><br><span class="line">    // 返回下标为 count-1 的数组元素，并且栈中元素个数 count 减一</span><br><span class="line">    String tmp = items[count-1];</span><br><span class="line">    --count;</span><br><span class="line">    return tmp;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="栈的空间复杂度"><a href="#栈的空间复杂度" class="headerlink" title="栈的空间复杂度"></a>栈的空间复杂度</h3><p>不管是顺序栈还是链式栈，我们存储数据只需要一个大小为 n 的数组就够了。在入栈和出栈过程中，只需要一两个临时变量存储空间，所以空间复杂度是 O(1)。</p>
-
-<p>注意，这里存储数据需要一个大小为 n 的数组，并不是说空间复杂度就是 O(n)。因为，这 n 个空间是必须的，无法省掉。所以我们说空间复杂度的时候，是指除了原本的数据存储空间外，算法运行还需要额外的存储空间。</p>
-
-<h3 id="栈的时间复杂度"><a href="#栈的时间复杂度" class="headerlink" title="栈的时间复杂度"></a>栈的时间复杂度</h3><p>对于出栈操作来说，我们不会涉及内存的重新申请和数据的搬移，所以出栈的时间复杂度仍然是 O(1)。但是，对于入栈操作来说，情况就不一样了。当栈中有空闲空间时，入栈操作的时间复杂度为 O(1)。但当空间不够时，就需要重新申请内存和数据搬移，所以时间复杂度就变成了 O(n)。</p>
-
-<h3 id="栈在表达式求值中的应用"><a href="#栈在表达式求值中的应用" class="headerlink" title="栈在表达式求值中的应用"></a>栈在表达式求值中的应用</h3><p>为了方便解释，我将算术表达式简化为只包含加减乘除四则运算，比如：34+13*9+44-12/3。对于这个四则运算，我们人脑可以很快求解出答案，但是对于计算机来说，理解这个表达式本身就是个挺难的事儿。如果换作你，让你来实现这样一个表达式求值的功能，你会怎么做呢？</p>
-
-<p>实际上，编译器就是通过两个栈来实现的。其中一个保存操作数的栈，另一个是保存运算符的栈。我们从左向右遍历表达式，当遇到数字，我们就直接压入操作数栈；当遇到运算符，就与运算符栈的栈顶元素进行比较。</p>
-
-<p>如果比运算符栈顶元素的优先级高，就将当前运算符压入栈；如果比运算符栈顶元素的优先级低或者相同，从运算符栈中取栈顶运算符，从操作数栈的栈顶取 2 个操作数，然后进行计算，再把计算完的结果压入操作数栈，继续比较。</p>
-
-<p>示例：<br><img src="/2019/07/30/stack/stack01.jpg" alt="栈在表达式中的应用"></p>
-<h3 id="栈在浏览器中的应用"><a href="#栈在浏览器中的应用" class="headerlink" title="栈在浏览器中的应用"></a>栈在浏览器中的应用</h3><p>我们使用两个栈，X 和 Y，我们把首次浏览的页面依次压入栈 X，当点击后退按钮时，再依次从栈 X 中出栈，并将出栈的数据依次放入栈 Y。当我们点击前进按钮时，我们依次从栈 Y 中取出数据，放入栈 X 中。当栈 X 中没有数据时，那就说明没有页面可以继续后退浏览了。当栈 Y 中没有数据，那就说明没有页面可以点击前进按钮浏览了。</p>
-
-<p>示例：</p>
-<p>比如你顺序查看了 a，b，c 三个页面，我们就依次把 a，b，c 压入栈，这个时候，两个栈的数据就是这个样子：</p>
-
-<p><img src="/2019/07/30/stack/stack02.jpg" alt="栈在表达式中的应用"></p>
-<p>当你通过浏览器的后退按钮，从页面 c 后退到页面 a 之后，我们就依次把 c 和 b 从栈 X 中弹出，并且依次放入到栈 Y。这个时候，两个栈的数据就是这个样子：</p>
-
-<p><img src="/2019/07/30/stack/stack03.jpg" alt="栈在表达式中的应用"></p>
-<p>这个时候你又想看页面 b，于是你又点击前进按钮回到 b 页面，我们就把 b 再从栈 Y 中出栈，放入栈 X 中。此时两个栈的数据是这个样子：</p>
-
-<p><img src="/2019/07/30/stack/stack04.jpg" alt="栈在表达式中的应用"></p>
-<p>这个时候，你通过页面 b 又跳转到新的页面 d 了，页面 c 就无法再通过前进、后退按钮重复查看了，所以需要清空栈 Y。此时两个栈的数据这个样子：</p>
-
-<p><img src="/2019/07/30/stack/stack05.jpg" alt="栈在表达式中的应用"></p>
+<p>通过上图你可以发现，MVC 的整体结构比较简单，由模型、视图和控制器组成，<strong>其核心思想就是将数据和视图分离</strong>，也就是说视图和模型之间是不允许直接通信的，它们之间的通信都是通过控制器来完成的。通常情况下的通信路径是视图发生了改变，然后通知控制器，控制器再根据情况判断是否需要更新模型数据。当然还可以根据不同的通信路径和控制器不同的实现方式，基于 MVC 又能衍生出很多其他的模式，如 MVP、MVVM 等，不过万变不离其宗，它们的基础骨架都是基于 MVC 而来。</p>
+<p>我们可以把虚拟 DOM 看成是 MVC 的视图部分。</p>
 
       
     </div>
@@ -403,7 +378,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/stack/" rel="tag"># stack</a>
+            <a href="/tags/optimization/" rel="tag"># optimization</a>
           
         </div>
       
@@ -416,8 +391,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/28/create-linked-list/" rel="next" title="怎样写出高效的链表代码">
-                <i class="fa fa-chevron-left"></i> 怎样写出高效的链表代码
+              <a href="/2020/04/18/performance-optimization/" rel="next" title="如何系统地优化页面性能？">
+                <i class="fa fa-chevron-left"></i> 如何系统地优化页面性能？
               </a>
             
           </div>
@@ -425,10 +400,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/05/queue/" rel="prev" title="队列">
-                队列 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -578,7 +549,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#理解“栈”"><span class="nav-number">1.</span> <span class="nav-text">理解“栈”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现栈"><span class="nav-number">2.</span> <span class="nav-text">实现栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈的空间复杂度"><span class="nav-number">3.</span> <span class="nav-text">栈的空间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈的时间复杂度"><span class="nav-number">4.</span> <span class="nav-text">栈的时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈在表达式求值中的应用"><span class="nav-number">5.</span> <span class="nav-text">栈在表达式求值中的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈在浏览器中的应用"><span class="nav-number">6.</span> <span class="nav-text">栈在浏览器中的应用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM的缺陷"><span class="nav-number">1.</span> <span class="nav-text">DOM的缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是虚拟DOM"><span class="nav-number">2.</span> <span class="nav-text">什么是虚拟DOM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双缓存"><span class="nav-number">3.</span> <span class="nav-text">双缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVC-模式"><span class="nav-number">4.</span> <span class="nav-text">MVC 模式</span></a></li></ol></div>
             
 
           </div>
